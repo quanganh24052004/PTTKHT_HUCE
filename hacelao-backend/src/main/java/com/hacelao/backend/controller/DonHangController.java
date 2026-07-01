@@ -141,7 +141,12 @@ public class DonHangController {
         hoaDonRepository.save(hoaDon);
         
         // Notify Tablet to reset
-        messagingTemplate.convertAndSend("/topic/tablet", "{\"event\": \"RESET_TABLE\", \"idBan\": \"" + order.getIdBan() + "\"}");
+        String idChiNhanh = banRepository.findById(order.getIdBan()).map(b -> b.getIdChiNhanh()).orElse("");
+        if (!idChiNhanh.isEmpty()) {
+            messagingTemplate.convertAndSend("/topic/maytinhbang/" + idChiNhanh, "{\"event\": \"RESET_TABLE\", \"idBan\": \"" + order.getIdBan() + "\", \"idChiNhanh\": \"" + idChiNhanh + "\"}");
+        } else {
+            messagingTemplate.convertAndSend("/topic/maytinhbang", "{\"event\": \"RESET_TABLE\", \"idBan\": \"" + order.getIdBan() + "\"}");
+        }
         
         return ResponseEntity.ok().build();
     }

@@ -23,15 +23,25 @@ function locTheoTrangThai(status) {
 }
 
 function ketNoiWebSocket() {
+    let nvInfoStr = localStorage.getItem('nhanVienInfo');
+    let branchId = '';
+    if(nvInfoStr) {
+        let nvInfo = JSON.parse(nvInfoStr);
+        branchId = nvInfo.idChiNhanh || '';
+    }
+
     const socket = new SockJS('http://localhost:8080/ws');
     ketNoiSocket = Stomp.over(socket);
     ketNoiSocket.connect({}, function (frame) {
         console.log('Cashier Connected to STOMP');
-        ketNoiSocket.subscribe('/topic/maytinhbang', function (message) {
+        let topicMayTinhBang = branchId ? `/topic/maytinhbang/${branchId}` : '/topic/maytinhbang';
+        let topicBep = branchId ? `/topic/bep/${branchId}` : '/topic/bep';
+        
+        ketNoiSocket.subscribe(topicMayTinhBang, function (message) {
             console.log("Tablet event, refresh danhSachBan");
             hienThiBanTuDatabase();
         });
-        ketNoiSocket.subscribe('/topic/bep', function (message) {
+        ketNoiSocket.subscribe(topicBep, function (message) {
             console.log("Kitchen event, refresh danhSachBan");
             hienThiBanTuDatabase();
         });
@@ -234,7 +244,9 @@ async function chotBan(idBan, soBan) {
     try {
         await fetch(`${API_BASE}/ban/${idBan}/status?status=ChoThanhToan`, { method: 'PUT' });
         if(ketNoiSocket) {
-            ketNoiSocket.send("/app/ban.sukien", {}, JSON.stringify({ event: "LOCK_TABLE" }));
+            let nvInfoStr = localStorage.getItem('nhanVienInfo');
+            let branchId = nvInfoStr ? JSON.parse(nvInfoStr).idChiNhanh : '';
+            ketNoiSocket.send("/app/ban.sukien", {}, JSON.stringify({ event: "LOCK_TABLE", idBan: idBan, idChiNhanh: branchId }));
         }
         window.location.href = `thanhtoan.html?table=${idBan}&soBan=${soBan}`;
     } catch(e) { alert("Lỗi chốt bàn"); }
