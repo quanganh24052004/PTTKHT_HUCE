@@ -130,7 +130,11 @@ function getDailyMenuIds() {
 
 async function loadDailyMenu() {
     try {
-        const res = await fetch(`${API_BASE}/thucdon/hangngay`);
+        const branchId = localStorage.getItem('tabletBranchId');
+        const url = branchId
+            ? `${API_BASE}/thucdon/hangngay?idChiNhanh=${branchId}`
+            : `${API_BASE}/thucdon/hangngay`;
+        const res = await fetch(url);
         dailyMenuIds = await res.json();
     } catch(e) {}
 }
@@ -625,11 +629,15 @@ function ketNoiWebSocket() {
                     showOrders();
                 }
             } else if(data.action === 'dailyMenuUpdate') {
-                loadDailyMenu().then(() => {
-                    fetchItems().then(() => {
-                        if(typeof currentCat !== 'undefined' && currentCat) filterItems(currentCat);
+                // Chỉ reload nếu thực đơn được cập nhật bởi bếp cùng chi nhánh
+                const myBranchId = localStorage.getItem('tabletBranchId');
+                if (!data.idChiNhanh || data.idChiNhanh === myBranchId) {
+                    loadDailyMenu().then(() => {
+                        fetchItems().then(() => {
+                            if(typeof currentCat !== 'undefined' && currentCat) filterItems(currentCat);
+                        });
                     });
-                });
+                }
             } else if(data.event) {
                 if(data.event === 'LOCK_TABLE') {
                     if (data.idBan === currentTableId) {

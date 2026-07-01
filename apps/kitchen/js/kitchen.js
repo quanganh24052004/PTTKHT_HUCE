@@ -20,21 +20,31 @@ function getDailyMenuIds() {
 
 async function setDailyMenuIds(ids) {
     dailyMenuIds = ids;
+    const nvInfoStr = localStorage.getItem('nhanVienInfo');
+    const branchId = nvInfoStr ? JSON.parse(nvInfoStr).idChiNhanh : null;
     try {
-        await fetch(`${API_BASE}/thucdon/hangngay`, {
+        const url = branchId
+            ? `${API_BASE}/thucdon/hangngay?idChiNhanh=${branchId}`
+            : `${API_BASE}/thucdon/hangngay`;
+        await fetch(url, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(ids)
         });
         if(ketNoiSocket) {
-            ketNoiSocket.send("/app/thucdon.capnhat", {}, JSON.stringify({ action: 'dailyMenuUpdate' }));
+            ketNoiSocket.send("/app/thucdon.capnhat", {}, JSON.stringify({ action: 'dailyMenuUpdate', idChiNhanh: branchId }));
         }
     } catch(e) { console.error("Lỗi lưu thực đơn ngày:", e); }
 }
 
 async function loadDailyMenu() {
     try {
-        const res = await fetch(`${API_BASE}/thucdon/hangngay`);
+        const nvInfoStr = localStorage.getItem('nhanVienInfo');
+        const branchId = nvInfoStr ? JSON.parse(nvInfoStr).idChiNhanh : null;
+        const url = branchId
+            ? `${API_BASE}/thucdon/hangngay?idChiNhanh=${branchId}`
+            : `${API_BASE}/thucdon/hangngay`;
+        const res = await fetch(url);
         dailyMenuIds = await res.json();
     } catch(e) {}
 }
