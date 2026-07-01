@@ -80,6 +80,54 @@ Truy cập: `http://localhost:8001/apps/tablet/datmon.html` (Thường được 
 
 ---
 
+## 🧪 Tài Khoản Test
+
+> Mật khẩu đăng nhập = Số điện thoại của nhân viên
+
+### 🏪 CN01 – HaceLao Nguyễn Chí Thanh (6 bàn: 1–6)
+
+| Tên đăng nhập | Mật khẩu | Vai trò |
+|---|---|---|
+| Nguyễn Văn Toàn | 0901112222 | 👨‍🍳 Đầu bếp |
+| Lê Minh Tuấn | 0903334444 | 👨‍🍳 Đầu bếp |
+| Hoàng Quang Hải | 0905556666 | 👨‍🍳 Đầu bếp |
+| Trần Thu Hà | 0902223333 | 💳 Thu ngân |
+| Phạm Ngọc Ánh | 0904445555 | 💳 Thu ngân |
+| Vũ Thùy Linh | 0906667777 | 💳 Thu ngân |
+
+### 🏪 CN02 – HaceLao Vincom Mega Mall Times City (3 bàn: 1–3)
+
+| Tên đăng nhập | Mật khẩu | Vai trò |
+|---|---|---|
+| Đặng Kim Chi | 0907778888 | 👨‍🍳 Đầu bếp |
+| Bùi Ngọc Bảo | 0908889999 | 💳 Thu ngân |
+
+### 🏪 CN03 – HaceLao Lotte Mall Tây Hồ (chưa có bàn trong DB)
+
+| Tên đăng nhập | Mật khẩu | Vai trò |
+|---|---|---|
+| Đinh Trọng Tài | 0909990000 | 👨‍🍳 Đầu bếp |
+| Ngô Thu Phương | 0910001111 | 💳 Thu ngân |
+
+### 🏪 CN04 – HaceLao Vincom Phạm Ngọc Thạch (chưa có bàn trong DB)
+
+| Tên đăng nhập | Mật khẩu | Vai trò |
+|---|---|---|
+| Lương Bích Hữu | 0911112222 | 👨‍🍳 Đầu bếp |
+| Hồ Quang Hiếu | 0912223333 | 💳 Thu ngân |
+
+### 👥 Khách hàng có điểm tích lũy (dùng để test thanh toán)
+
+| Số điện thoại | Tên | Điểm tích lũy |
+|---|---|---|
+| 0901111111 | Nguyễn Văn An | 500 điểm (= 500.000đ) |
+| 0902222222 | Trần Thị Bích | 150 điểm |
+| 0904444444 | Phạm Thu Dung | 1.200 điểm (= 1.200.000đ) |
+| 0905555555 | Hoàng Trọng Ân | 45 điểm |
+| 0903333333 | Lê Hoàng Cường | 0 điểm |
+
+---
+
 ## 🛠️ Công Nghệ Sử Dụng
 
 - **Frontend**: HTML5, CSS3 (Vanilla), JavaScript, SockJS, StompJS.
