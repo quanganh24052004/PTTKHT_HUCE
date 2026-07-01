@@ -22,6 +22,7 @@ public class OrderController {
 
     public static class CheckoutRequest {
         public String sdt;
+        public String tenKhachHang;
         public String phuongThucThanhToan;
         public Double tienKhachDua;
         public Double tienThua;
@@ -110,7 +111,7 @@ public class OrderController {
             KhachHang kh = khachHangRepository.findById(request.sdt).orElseGet(() -> {
                 KhachHang newKh = new KhachHang();
                 newKh.setSoDienThoai(request.sdt);
-                newKh.setTenKhachHang("Khách hàng mới");
+                newKh.setTenKhachHang(request.tenKhachHang != null && !request.tenKhachHang.trim().isEmpty() ? request.tenKhachHang : "Khách hàng mới");
                 newKh.setDiemTichLuy(0);
                 return newKh;
             });

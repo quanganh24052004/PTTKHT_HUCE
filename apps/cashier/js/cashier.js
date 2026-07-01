@@ -327,6 +327,7 @@ async function initThanhToan() {
                         const sdt = phoneInput.value.trim();
                         const infoDiv = document.getElementById('customerInfo');
                         const redeemBox = document.getElementById('redeemBox');
+                        const newCustomerBox = document.getElementById('newCustomerBox');
                         
                         if (sdt.length >= 9) {
                             try {
@@ -338,18 +339,21 @@ async function initThanhToan() {
                                     infoDiv.style.color = '#27AE60';
                                     infoDiv.style.display = 'block';
                                     redeemBox.style.display = 'block';
+                                    if(newCustomerBox) newCustomerBox.style.display = 'none';
                                 } else {
                                     window.currentCustomerPoints = 0;
                                     infoDiv.innerText = `Khách hàng mới (Sẽ được tạo tự động khi thanh toán)`;
                                     infoDiv.style.color = '#F39C12';
                                     infoDiv.style.display = 'block';
                                     redeemBox.style.display = 'none';
+                                    if(newCustomerBox) newCustomerBox.style.display = 'block';
                                 }
                             } catch(e) {}
                         } else {
                             window.currentCustomerPoints = 0;
                             infoDiv.style.display = 'none';
                             redeemBox.style.display = 'none';
+                            if(newCustomerBox) newCustomerBox.style.display = 'none';
                         }
                         calculateChange();
                     }, 500);
@@ -418,6 +422,7 @@ async function xacNhanThanhToan() {
         if(!currentTable.openOrderId) return;
         
         const sdt = document.getElementById('customerPhone') ? document.getElementById('customerPhone').value.trim() : '';
+        const tenKhachHang = document.getElementById('customerName') ? document.getElementById('customerName').value.trim() : '';
         const isCash = document.getElementById('btnCash').classList.contains('active');
         let total = window.currentTotal || 0;
         let redeemInput = document.getElementById('diemSuDung');
@@ -436,6 +441,7 @@ async function xacNhanThanhToan() {
 
         const payload = {
             sdt: sdt,
+            tenKhachHang: tenKhachHang,
             phuongThucThanhToan: isCash ? 'cash' : 'qr',
             tienKhachDua: tienKhachDua,
             tienThua: tienThua,
