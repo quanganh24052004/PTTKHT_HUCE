@@ -122,7 +122,8 @@ public class OrderController {
             if (diemSuDung > 0 && currentPoints >= diemSuDung) {
                 currentPoints -= diemSuDung;
             }
-            currentPoints += (int)(tongTien * 0.05);
+            // 10% giá trị mua hàng, 1 điểm = 1000đ
+            currentPoints += (int)((tongTien * 0.10) / 1000.0);
             kh.setDiemTichLuy(currentPoints);
             khachHangRepository.save(kh);
         }
