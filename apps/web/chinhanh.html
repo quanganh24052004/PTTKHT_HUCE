@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <title>HaceLao - Chi nhánh</title>
+    <link rel="stylesheet" href="../../shared/css/header_footer.css">
+    <link rel="stylesheet" href="css/thucdon.css">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/chinhanh.css">
+</head>
+<body>
+    <!--1. HEADER -->
+    <div id="header-ly"></div>
+
+    <!--2. NỘI DUNG CHÍNH -->
+    <main class="branch-page">
+        <div class="branch-header">
+            <h3 class="branch-subtitle">THÔNG TIN NHÀ HÀNG HACELAO</h3>
+            <h1 class="branch-title">HaceLao Xin Chào!</h1>
+        </div>
+
+        <div class="container">
+            <div id="branch-list" class="branch-list">
+                <!-- Danh sách chi nhánh sẽ được đổ vào đây bằng JS -->
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Popup Bản đồ Chi nhánh -->
+    <div id="map-modal" class="map-modal">
+        <div class="map-modal-content">
+            <div id="close-map-btn" class="map-close-btn">&times;</div>
+            <h2 id="map-branch-name" class="map-title">Tên Chi Nhánh</h2>
+            <div id="map-iframe-container" class="map-iframe-container">
+                <!-- Iframe bản đồ sẽ được JS chèn vào đây -->
+            </div>
+        </div>
+    </div>
+
+    <!--3. FOOTER -->
+    <div id="footer-ly"></div>
+
+    <!-- NHÚNG JAVASCRIPT -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <!-- File Header/Footer dùng chung (để hút thẻ vào) -->
+    <script src="./js/header_footer.js"></script> 
+    <!-- Data chi nhánh -->
+    <script src="../../shared/data/db_chinhanh.js"></script>
+    <!-- Code chức năng render trang chi nhánh -->
+    <script src="./js/chinhanh.js"></script>
+</body>
+</html>

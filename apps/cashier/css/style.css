@@ -1,0 +1,67 @@
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+body { background-color: #F5F7FA; color: #333; }
+.layout { display: flex; height: 100vh; overflow: hidden; }
+
+/* Sidebar */
+.sidebar { width: 250px; flex-shrink: 0; background: white; border-right: 1px solid #E0E0E0; display: flex; flex-direction: column; }
+.logo { display: flex; align-items: center; padding: 20px; border-bottom: 1px solid #EEE; gap: 10px; }
+.logo img { width: 40px; height: 40px; border-radius: 50%; }
+.logo-text { font-size: 20px; font-weight: 700; color: #FF6B00; }
+.nav-links { list-style: none; padding: 20px 0; }
+.nav-links li { margin-bottom: 5px; }
+.nav-links a { display: block; padding: 15px 30px; color: #666; text-decoration: none; font-weight: 500; font-size: 16px; transition: 0.2s; }
+.nav-links a:hover { color: #FF6B00; background: #FFF5F0; }
+.nav-links li.active a { color: #FF6B00; background: #FFF5F0; border-right: 4px solid #FF6B00; font-weight: 600; }
+.sidebar-user { display: flex; align-items: center; padding: 20px; border-top: 1px solid #EEE; cursor: pointer; transition: background 0.2s; margin-top: auto; }
+.sidebar-user:hover { background: #F5F7FA; }
+.sidebar-user img { width: 40px; height: 40px; border-radius: 50%; margin-right: 15px; }
+.sidebar-user-info { display: flex; flex-direction: column; flex: 1; }
+.sidebar-user-name { font-weight: 700; font-size: 15px; color: #333; margin-bottom: 2px; }
+.sidebar-user-role { font-size: 13px; color: #888; }
+
+/* Main Content */
+.main-content { flex: 1; min-width: 0; display: flex; flex-direction: column; overflow: hidden; background: #ECF0F1; }
+.header { height: 70px; background: white; border-bottom: 1px solid #E0E0E0; display: flex; align-items: center; justify-content: space-between; padding: 0 30px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); z-index: 10; }
+.header h2 { font-size: 22px; color: #2C3E50; }
+.user-info { font-weight: 600; color: #7F8C8D; }
+
+/* Sơ đồ bàn */
+.table-grid { padding: 30px; display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 25px; overflow-y: auto; }
+.table-card { background: white; height: 150px; border-radius: 12px; display: flex; flex-direction: column; justify-content: center; align-items: center; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border: 2px solid transparent; }
+.table-card:hover { transform: translateY(-5px); box-shadow: 0 8px 15px rgba(0,0,0,0.1); }
+.table-number { font-size: 32px; font-weight: 700; color: #2C3E50; margin-bottom: 10px; }
+.table-status { font-size: 14px; font-weight: 600; padding: 4px 12px; border-radius: 20px; }
+
+.status-trong { background: #E8F5E9; color: #2E7D32; border-color: #2E7D32; }
+.status-dang-phuc-vu { background: #FFF3E0; color: #E65100; border-color: #E65100; }
+.status-cho-thanh-toan { background: #FFEBEE; color: #C62828; border-color: #C62828; }
+
+/* Modals & Popups */
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 100; }
+.modal-content { background: white; width: 500px; border-radius: 12px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+.modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #EEE; padding-bottom: 15px; margin-bottom: 20px; }
+.modal-title { font-size: 20px; font-weight: 700; color: #2C3E50; }
+.close-btn { background: none; border: none; font-size: 24px; cursor: pointer; color: #95A5A6; }
+.modal-body { max-height: 400px; overflow-y: auto; margin-bottom: 20px; }
+.modal-footer { display: flex; justify-content: flex-end; gap: 15px; border-top: 1px solid #EEE; padding-top: 20px; }
+
+.btn { padding: 10px 20px; border: none; border-radius: 6px; font-size: 15px; font-weight: 600; cursor: pointer; transition: 0.2s; }
+.btn-gray { background: #ECF0F1; color: #34495E; }
+.btn-orange { background: #E65100; color: white; }
+.btn-red { background: #E74C3C; color: white; }
+.btn-blue { background: #3498DB; color: white; }
+
+/* Thanh toán Layout */
+.payment-layout { display: flex; height: calc(100vh - 70px); }
+.bill-section { flex: 1; border-right: 1px solid #E0E0E0; background: white; padding: 20px; display: flex; flex-direction: column; }
+.payment-section { width: 400px; background: #F8F9FA; padding: 20px; display: flex; flex-direction: column; }
+
+.bill-item { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 15px; padding-bottom: 10px; border-bottom: 1px dashed #EEE; }
+.bill-total { font-size: 22px; font-weight: bold; color: #E74C3C; text-align: right; margin-top: auto; padding-top: 20px; border-top: 2px solid #EEE; }
+
+.input-box { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; margin-bottom: 15px; font-size: 15px; }
+.qr-box { display: none; text-align: center; margin: 20px 0; }
+.qr-box img { width: 200px; height: 200px; }
+.payment-methods { display: flex; gap: 10px; margin-bottom: 20px; }
+.method-btn { flex: 1; padding: 15px 0; border: 1px solid #ccc; background: white; border-radius: 8px; font-weight: bold; cursor: pointer; }
+.method-btn.active { border-color: #3498DB; color: #3498DB; background: #EBF5FB; }

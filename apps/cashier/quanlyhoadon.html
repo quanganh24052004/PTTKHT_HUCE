@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HaceLao Thu ngân - Lịch sử Hóa đơn</title>
+    <link rel="stylesheet" href="css/style.css?v=5">
+</head>
+<body>
+    <div class="layout">
+        <aside class="sidebar">
+            <div class="logo">
+                <img src="images/Rectangle 8.png" alt="HaceLao Cashier" onerror="this.style.display='none'">
+                <span class="logo-text" style="color: #000; font-size: 18px;">Thu ngân</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="sodoban.html">Sơ đồ bàn</a></li>
+                <li class="active"><a href="quanlyhoadon.html">Quản lý hóa đơn</a></li>
+            </ul>
+            <div class="sidebar-user" onclick="showLogoutModal()">
+                <img src="images/user.png" alt="User">
+                <div class="sidebar-user-info">
+                    <div class="sidebar-user-name" id="sidebarUserName">Nhân viên</div>
+                    <div class="sidebar-user-role">Thu ngân</div>
+                </div>
+                <span style="margin-left: auto; color: #888; font-weight: bold;">&#8964;</span>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="header">
+                <h2>Lịch sử Hóa đơn</h2>
+            </header>
+            <div style="padding: 30px;">
+                <input type="text" id="invoiceSearch" class="input-box" style="max-width: 400px; margin-bottom: 20px;" placeholder="Tìm kiếm mã hóa đơn, SĐT..." oninput="filterInvoices()">
+                <div style="background: white; border-radius: 8px; padding: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+                    <table class="table" style="width:100%; border-collapse: collapse;">
+                        <thead>
+                            <tr style="border-bottom: 2px solid #ECF0F1; text-align: left;">
+                                <th style="padding: 12px; color: #34495E;">Mã HĐ</th>
+                                <th style="padding: 12px; color: #34495E;">SĐT Khách hàng</th>
+                                <th style="padding: 12px; color: #34495E;">Phương thức TT</th>
+                                <th style="padding: 12px; color: #34495E;">Tổng tiền</th>
+                                <th style="padding: 12px; color: #34495E;">Thời gian</th>
+                            </tr>
+                        </thead>
+                        <tbody id="invoiceTableBody">
+                            <tr><td colspan="5" style="text-align:center; padding:20px; color:#7F8C8D;">Đang tải dữ liệu...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+    <!-- Logout Modal -->
+    <div id="logoutModal" class="modal-overlay-logout" style="display: none;">
+        <div class="modal-content-logout">
+            <span class="close" onclick="closeLogoutModal()" style="position: absolute; right: 20px; top: 15px; font-size: 24px; cursor: pointer;">&times;</span>
+            <h3 style="font-size: 20px;">Xác nhận</h3>
+            <p style="font-size: 16px;">Bạn có đồng ý đăng xuất không?</p>
+            <div style="display: flex; gap: 15px; justify-content: center;">
+                <button class="btn btn-orange" style="padding: 10px 40px; border-radius: 25px; font-size: 16px;" onclick="confirmLogout()">Đồng ý</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/cashier.js?v=13"></script>
+    <script>
+        function showLogoutModal() { document.getElementById('logoutModal').style.display = 'flex'; }
+        function closeLogoutModal() { document.getElementById('logoutModal').style.display = 'none'; }
+        function confirmLogout() {
+            localStorage.removeItem('nhanVienInfo');
+            window.location.href = '../login.html';
+        }
+        
+        window.onload = () => { 
+            let nvInfo = localStorage.getItem('nhanVienInfo');
+            if (!nvInfo) {
+                window.location.href = '../login.html';
+                return;
+            }
+            try {
+                let info = JSON.parse(nvInfo);
+                if (info.vaiTro !== 'ThuNgan') {
+                    window.location.href = '../login.html';
+                    return;
+                }
+                updateCashierHeader();
+                fetchInvoices();
+            } catch(e) {
+                window.location.href = '../login.html';
+                return;
+            }
+        };
+
+        let allInvoices = [];
+        async function fetchInvoices() {
+            try {
+                const res = await fetch('http://localhost:8080/api/hoadon', { headers: { 'Cache-Control': 'no-cache' } });
+                allInvoices = await res.json();
+                // Sắp xếp hóa đơn mới nhất lên đầu
+                allInvoices.sort((a, b) => new Date(b.ngayThanhToan) - new Date(a.ngayThanhToan));
+                renderInvoices(allInvoices);
+            } catch (error) {
+                document.getElementById('invoiceTableBody').innerHTML = `<tr><td colspan="5" style="text-align:center; padding:20px; color:#E74C3C;">Lỗi tải dữ liệu hóa đơn</td></tr>`;
+            }
+        }
+
+        function renderInvoices(invoices) {
+            const tbody = document.getElementById('invoiceTableBody');
+            if (invoices.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:20px; color:#7F8C8D;">Không có hóa đơn nào</td></tr>`;
+                return;
+            }
+            tbody.innerHTML = invoices.map(hd => {
+                const sdt = hd.soDienThoai ? hd.soDienThoai : '<span style="color:#BDC3C7">Khách vãng lai</span>';
+                const pt = hd.phuongThucThanhToan === 'TienMat' ? 'Tiền mặt' : 'Chuyển khoản QR';
+                const time = new Date(hd.ngayThanhToan).toLocaleString('vi-VN');
+                return `
+                <tr style="border-bottom: 1px solid #ECF0F1;">
+                    <td style="padding: 12px;"><b>${hd.idHoaDon}</b></td>
+                    <td style="padding: 12px;">${sdt}</td>
+                    <td style="padding: 12px;">${pt}</td>
+                    <td style="padding: 12px; color:#27AE60; font-weight:bold;">${hd.tongTienThanhToan.toLocaleString('vi-VN')} đ</td>
+                    <td style="padding: 12px; font-size: 14px; color:#7F8C8D;">${time}</td>
+                </tr>
+                `;
+            }).join('');
+        }
+
+        function filterInvoices() {
+            const keyword = document.getElementById('invoiceSearch').value.toLowerCase();
+            const filtered = allInvoices.filter(hd => 
+                (hd.idHoaDon && hd.idHoaDon.toLowerCase().includes(keyword)) ||
+                (hd.soDienThoai && hd.soDienThoai.toLowerCase().includes(keyword))
+            );
+            renderInvoices(filtered);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HaceLao Thu ngân - Sơ đồ bàn</title>
+    <link rel="stylesheet" href="css/style.css?v=5">
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+</head>
+<body>
+    <div class="layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <img src="images/Rectangle 8.png" alt="HaceLao Cashier" onerror="this.style.display='none'">
+                <span class="logo-text" style="color: #000; font-size: 18px;">Thu ngân</span>
+            </div>
+            <ul class="nav-links">
+                <li class="active"><a href="sodoban.html">Sơ đồ bàn</a></li>
+                <li><a href="quanlyhoadon.html">Quản lý hóa đơn</a></li>
+            </ul>
+            <div class="sidebar-user" onclick="showLogoutModal()">
+                <img src="images/user.png" alt="User">
+                <div class="sidebar-user-info">
+                    <div class="sidebar-user-name" id="sidebarUserName">Nhân viên</div>
+                    <div class="sidebar-user-role">Thu ngân</div>
+                </div>
+                <span style="margin-left: auto; color: #888; font-weight: bold;">&#8964;</span>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="header">
+                <h2>Sơ đồ bàn</h2>
+                <div style="position: relative;">
+                    <input type="text" id="tableSearchInput" placeholder="Tìm kiếm số bàn..." style="padding: 10px 40px; border-radius: 20px; border: 1px solid #ccc; width: 250px; outline: none;" oninput="filterTables()">
+                    <span style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #888;">🔍</span>
+                </div>
+            </header>
+            <div class="filters" style="padding: 15px 30px; display: flex; gap: 10px; border-bottom: 1px solid #E0E0E0; background: white;">
+                <button class="btn btn-orange active" id="btnFilterALL" onclick="filterByStatus('ALL')">Tất cả</button>
+                <button class="btn btn-gray" id="btnFilterTrong" onclick="filterByStatus('Trong')">Bàn trống</button>
+                <button class="btn btn-gray" id="btnFilterDangPhucVu" onclick="filterByStatus('DangPhucVu')">Đang phục vụ</button>
+                <button class="btn btn-gray" id="btnFilterChoThanhToan" onclick="filterByStatus('ChoThanhToan')">Chờ thanh toán</button>
+            </div>
+            
+            <div class="table-grid" id="tableGrid">
+                <!-- Rendered by JS -->
+            </div>
+        </main>
+    </div>
+    
+    <!-- Modal Chốt bàn -->
+    <div class="modal-overlay" id="tableModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title" id="modalTitle">Bàn số 1</div>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Rendered by JS -->
+            </div>
+            <div class="modal-footer" id="modalFooter">
+                <!-- Rendered by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Logout Modal -->
+    <div id="logoutModal" class="modal-overlay-logout" style="display: none;">
+        <div class="modal-content-logout">
+            <span class="close" onclick="closeLogoutModal()" style="position: absolute; right: 20px; top: 15px; font-size: 24px; cursor: pointer;">&times;</span>
+            <h3 style="font-size: 20px;">Xác nhận</h3>
+            <p style="font-size: 16px;">Bạn có đồng ý đăng xuất không?</p>
+            <div style="display: flex; gap: 15px; justify-content: center;">
+                <button class="btn btn-orange" style="padding: 10px 40px; border-radius: 25px; font-size: 16px;" onclick="confirmLogout()">Đồng ý</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/cashier.js?v=13"></script>
+    <script>
+        function showLogoutModal() { document.getElementById('logoutModal').style.display = 'flex'; }
+        function closeLogoutModal() { document.getElementById('logoutModal').style.display = 'none'; }
+        function confirmLogout() {
+            localStorage.removeItem('nhanVienInfo');
+            window.location.href = '../login.html';
+        }
+        
+        window.onload = () => { 
+            let nvInfo = localStorage.getItem('nhanVienInfo');
+            if (!nvInfo) {
+                window.location.href = '../login.html';
+                return;
+            }
+            try {
+                let info = JSON.parse(nvInfo);
+                if (info.vaiTro !== 'ThuNgan') {
+                    window.location.href = '../login.html';
+                    return;
+                }
+                document.getElementById('sidebarUserName').innerText = info.tenDangNhap || 'Nhân viên';
+            } catch(e) {
+                window.location.href = '../login.html';
+                return;
+            }
+            initSodoBan(); 
+        };
+    </script>
+</body>
+</html>

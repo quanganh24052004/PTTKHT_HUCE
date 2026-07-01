@@ -1,0 +1,97 @@
+INSERT IGNORE INTO chi_nhanh (id_chi_nhanh, ten_chi_nhanh, dia_chi, so_dien_thoai, thong_tin, hinh_anh) VALUES ('CN01', 'HaceLao Nguyễn Chí Thanh', 'Tầng 6, Tổ hợp văn phòng cho thuê, 54A Nguyễn Chí Thanh, Láng Thượng, Đống Đa, Hà Nội', '222222222', '10:00 AM - 02:00 AM', 'images/Web Trang chủ/chi-nhanh.png');
+INSERT IGNORE INTO chi_nhanh (id_chi_nhanh, ten_chi_nhanh, dia_chi, so_dien_thoai, thong_tin, hinh_anh) VALUES ('CN02', 'HaceLao Vincom Mega Mall Times City', 'Tầng B1, Vincom Mega Mall Times City, 458 Minh Khai, Hai Bà Trưng, Hà Nội', '8888888888', '10:00 AM - 03:00 AM', 'images/Web Trang chủ/chi-nhanh.png');
+INSERT IGNORE INTO chi_nhanh (id_chi_nhanh, ten_chi_nhanh, dia_chi, so_dien_thoai, thong_tin, hinh_anh) VALUES ('CN03', 'HaceLao Lotte Mall Tây Hồ', 'Tầng 4, TTTM Lotte Hà Nội, 272 Võ Chí Công, Phú Thượng, Tây Hồ, Hà Nội', '1717171717', '10:00 AM - 03:00 AM', 'images/Web Trang chủ/chi-nhanh.png');
+INSERT IGNORE INTO chi_nhanh (id_chi_nhanh, ten_chi_nhanh, dia_chi, so_dien_thoai, thong_tin, hinh_anh) VALUES ('CN04', 'Hacelao Vincom Phạm Ngọc Thạch', 'Tầng B1, Vincom Phạm Ngọc Thạch, 2 Phạm Ngọc Thạch, Kim Liên, Hà Nội', '0123456789', '10:00 AM - 03:00 AM', 'images/Web Trang chủ/chi-nhanh.png');
+
+INSERT IGNORE INTO khach_hang (so_dien_thoai, ten_khach_hang, diem_tich_luy) VALUES ('0901111111', 'Nguyễn Văn An', 500);
+INSERT IGNORE INTO khach_hang (so_dien_thoai, ten_khach_hang, diem_tich_luy) VALUES ('0902222222', 'Trần Thị Bích', 150);
+INSERT IGNORE INTO khach_hang (so_dien_thoai, ten_khach_hang, diem_tich_luy) VALUES ('0903333333', 'Lê Hoàng Cường', 0);
+INSERT IGNORE INTO khach_hang (so_dien_thoai, ten_khach_hang, diem_tich_luy) VALUES ('0904444444', 'Phạm Thu Dung', 1200);
+INSERT IGNORE INTO khach_hang (so_dien_thoai, ten_khach_hang, diem_tich_luy) VALUES ('0905555555', 'Hoàng Trọng Ân', 45);
+
+INSERT IGNORE INTO nhan_vien (id_nhan_vien, id_chi_nhanh, ten_dang_nhap, mat_khau, vai_tro) VALUES ('NV_B01', 'CN01', 'Nguyễn Văn Toàn', '0901112222', 'DauBep');
+INSERT IGNORE INTO nhan_vien (id_nhan_vien, id_chi_nhanh, ten_dang_nhap, mat_khau, vai_tro) VALUES ('NV_T01', 'CN01', 'Trần Thu Hà', '0902223333', 'ThuNgan');
+INSERT IGNORE INTO nhan_vien (id_nhan_vien, id_chi_nhanh, ten_dang_nhap, mat_khau, vai_tro) VALUES ('NV_B01_CA2', 'CN01', 'Lê Minh Tuấn', '0903334444', 'DauBep');
+INSERT IGNORE INTO nhan_vien (id_nhan_vien, id_chi_nhanh, ten_dang_nhap, mat_khau, vai_tro) VALUES ('NV_T01_CA2', 'CN01', 'Phạm Ngọc Ánh', '0904445555', 'ThuNgan');
+INSERT IGNORE INTO nhan_vien (id_nhan_vien, id_chi_nhanh, ten_dang_nhap, mat_khau, vai_tro) VALUES ('NV_B01_CA3', 'CN01', 'Hoàng Quang Hải', '0905556666', 'DauBep');
+INSERT IGNORE INTO nhan_vien (id_nhan_vien, id_chi_nhanh, ten_dang_nhap, mat_khau, vai_tro) VALUES ('NV_T01_CA3', 'CN01', 'Vũ Thùy Linh', '0906667777', 'ThuNgan');
+INSERT IGNORE INTO nhan_vien (id_nhan_vien, id_chi_nhanh, ten_dang_nhap, mat_khau, vai_tro) VALUES ('NV_B02', 'CN02', 'Đặng Kim Chi', '0907778888', 'DauBep');
+INSERT IGNORE INTO nhan_vien (id_nhan_vien, id_chi_nhanh, ten_dang_nhap, mat_khau, vai_tro) VALUES ('NV_T02', 'CN02', 'Bùi Ngọc Bảo', '0908889999', 'ThuNgan');
+INSERT IGNORE INTO nhan_vien (id_nhan_vien, id_chi_nhanh, ten_dang_nhap, mat_khau, vai_tro) VALUES ('NV_B03', 'CN03', 'Đinh Trọng Tài', '0909990000', 'DauBep');
+INSERT IGNORE INTO nhan_vien (id_nhan_vien, id_chi_nhanh, ten_dang_nhap, mat_khau, vai_tro) VALUES ('NV_T03', 'CN03', 'Ngô Thu Phương', '0910001111', 'ThuNgan');
+INSERT IGNORE INTO nhan_vien (id_nhan_vien, id_chi_nhanh, ten_dang_nhap, mat_khau, vai_tro) VALUES ('NV_B04', 'CN04', 'Lương Bích Hữu', '0911112222', 'DauBep');
+INSERT IGNORE INTO nhan_vien (id_nhan_vien, id_chi_nhanh, ten_dang_nhap, mat_khau, vai_tro) VALUES ('NV_T04', 'CN04', 'Hồ Quang Hiếu', '0912223333', 'ThuNgan');
+
+INSERT IGNORE INTO ban (id_ban, id_chi_nhanh, so_ban, trang_thai) VALUES ('B01_CN01', 'CN01', 1, 'Trong');
+INSERT IGNORE INTO ban (id_ban, id_chi_nhanh, so_ban, trang_thai) VALUES ('B02_CN01', 'CN01', 2, 'Trong');
+INSERT IGNORE INTO ban (id_ban, id_chi_nhanh, so_ban, trang_thai) VALUES ('B03_CN01', 'CN01', 3, 'Trong');
+INSERT IGNORE INTO ban (id_ban, id_chi_nhanh, so_ban, trang_thai) VALUES ('B04_CN01', 'CN01', 4, 'Trong');
+INSERT IGNORE INTO ban (id_ban, id_chi_nhanh, so_ban, trang_thai) VALUES ('B05_CN01', 'CN01', 5, 'Trong');
+INSERT IGNORE INTO ban (id_ban, id_chi_nhanh, so_ban, trang_thai) VALUES ('B06_CN01', 'CN01', 6, 'Trong');
+INSERT IGNORE INTO ban (id_ban, id_chi_nhanh, so_ban, trang_thai) VALUES ('B01_CN02', 'CN02', 1, 'Trong');
+INSERT IGNORE INTO ban (id_ban, id_chi_nhanh, so_ban, trang_thai) VALUES ('B02_CN02', 'CN02', 2, 'Trong');
+INSERT IGNORE INTO ban (id_ban, id_chi_nhanh, so_ban, trang_thai) VALUES ('B03_CN02', 'CN02', 3, 'Trong');
+
+
+INSERT IGNORE INTO chi_tiet_order (id_order, id_mon_an, so_luong, don_gia, thoi_gian_goi, trang_thai_mon) VALUES ('OD_001', 'MA01', 1, 299000, '2026-05-28T18:00:00', 'DaXong');
+INSERT IGNORE INTO chi_tiet_order (id_order, id_mon_an, so_luong, don_gia, thoi_gian_goi, trang_thai_mon) VALUES ('OD_001', 'MA18', 4, 100000, '2026-05-28T18:00:00', 'DaXong');
+INSERT IGNORE INTO chi_tiet_order (id_order, id_mon_an, so_luong, don_gia, thoi_gian_goi, trang_thai_mon) VALUES ('OD_001', 'MA30', 1, 20000, '2026-05-28T19:00:00', 'DaXong');
+INSERT IGNORE INTO chi_tiet_order (id_order, id_mon_an, so_luong, don_gia, thoi_gian_goi, trang_thai_mon) VALUES ('OD_002', 'MA02', 1, 299000, '2026-05-28T20:40:00', 'DangNau');
+INSERT IGNORE INTO chi_tiet_order (id_order, id_mon_an, so_luong, don_gia, thoi_gian_goi, trang_thai_mon) VALUES ('OD_002', 'MA08', 1, 100000, '2026-05-28T20:40:00', 'DaXong');
+INSERT IGNORE INTO chi_tiet_order (id_order, id_mon_an, so_luong, don_gia, thoi_gian_goi, trang_thai_mon) VALUES ('OD_002', 'MA13', 1, 10000, '2026-05-28T20:55:00', 'DaTiepNhan');
+INSERT IGNORE INTO chi_tiet_order (id_order, id_mon_an, so_luong, don_gia, thoi_gian_goi, trang_thai_mon) VALUES ('OD_003', 'MA03', 1, 399000, '2026-05-28T20:15:00', 'DaXong');
+INSERT IGNORE INTO chi_tiet_order (id_order, id_mon_an, so_luong, don_gia, thoi_gian_goi, trang_thai_mon) VALUES ('OD_003', 'MA26', 1, 10000, '2026-05-28T20:15:00', 'DaXong');
+INSERT IGNORE INTO chi_tiet_order (id_order, id_mon_an, so_luong, don_gia, thoi_gian_goi, trang_thai_mon) VALUES ('OD_003', 'MA34', 1, 5000, '2026-05-28T20:15:00', 'DangNau');
+INSERT IGNORE INTO chi_tiet_order (id_order, id_mon_an, so_luong, don_gia, thoi_gian_goi, trang_thai_mon) VALUES ('OD_004', 'MA01', 1, 299000, '2026-05-27T10:00:00', 'DaXong');
+INSERT IGNORE INTO chi_tiet_order (id_order, id_mon_an, so_luong, don_gia, thoi_gian_goi, trang_thai_mon) VALUES ('OD_004', 'MA15', 1, 25000, '2026-05-27T10:00:00', 'DaXong');
+
+INSERT IGNORE INTO hoa_don (id_hoa_don, id_order, id_nhan_vien_thu_ngan, so_dien_thoai, tong_tien_tam_tinh, tong_tien_thanh_toan, ngay_thanh_toan, diem_da_su_dung, so_tien_da_giam, tien_khach_dua, tien_thua, phuong_thuc_thanh_toan) VALUES ('HD_001', 'OD_001', 'NV_T01', '0901111111', 719000, 519000, '2026-05-28T20:00:00', 200, 200000, 600000, 81000, 'TienMat');
+INSERT IGNORE INTO hoa_don (id_hoa_don, id_order, id_nhan_vien_thu_ngan, so_dien_thoai, tong_tien_tam_tinh, tong_tien_thanh_toan, ngay_thanh_toan, diem_da_su_dung, so_tien_da_giam, tien_khach_dua, tien_thua, phuong_thuc_thanh_toan) VALUES ('HD_002', 'OD_004', 'NV_T01', NULL, 324000, 324000, '2026-05-27T11:00:00', 0, 0, 324000, 0, 'ChuyenKhoanQR');
+
+INSERT IGNORE INTO danh_muc (id_danh_muc, id_danh_muc_cha, ten_danh_muc) VALUES ('DM_NL', NULL, 'Nước lẩu');
+INSERT IGNORE INTO danh_muc (id_danh_muc, id_danh_muc_cha, ten_danh_muc) VALUES ('DM_MC', NULL, 'Món chính');
+INSERT IGNORE INTO danh_muc (id_danh_muc, id_danh_muc_cha, ten_danh_muc) VALUES ('DM_NC', NULL, 'Nước chấm');
+INSERT IGNORE INTO danh_muc (id_danh_muc, id_danh_muc_cha, ten_danh_muc) VALUES ('DM_DAV', NULL, 'Đồ ăn vặt');
+INSERT IGNORE INTO danh_muc (id_danh_muc, id_danh_muc_cha, ten_danh_muc) VALUES ('DM_TU', NULL, 'Thức uống');
+INSERT IGNORE INTO danh_muc (id_danh_muc, id_danh_muc_cha, ten_danh_muc) VALUES ('DM_MC_T', 'DM_MC', 'Món thịt');
+INSERT IGNORE INTO danh_muc (id_danh_muc, id_danh_muc_cha, ten_danh_muc) VALUES ('DM_MC_HS', 'DM_MC', 'Hải sản');
+INSERT IGNORE INTO danh_muc (id_danh_muc, id_danh_muc_cha, ten_danh_muc) VALUES ('DM_MC_BM', 'DM_MC', 'Món bún mì');
+INSERT IGNORE INTO danh_muc (id_danh_muc, id_danh_muc_cha, ten_danh_muc) VALUES ('DM_MC_R', 'DM_MC', 'Rau');
+
+INSERT IGNORE INTO mon_an (id_mon_an, id_danh_muc, ten_mon_an, gia, trang_thai, hinh_anh) VALUES ('MA01', 'DM_NL', 'Lẩu Cà Chua Truyền Thống', 299000, 'ConHang', 'images/Web Trang chủ/Lẩu 1.webp');
+INSERT IGNORE INTO mon_an (id_mon_an, id_danh_muc, ten_mon_an, gia, trang_thai, hinh_anh) VALUES ('MA02', 'DM_NL', 'Lẩu Dầu Cay Mala', 349000, 'ConHang', 'images/Web Trang chủ/Lẩu 2.webp');
+INSERT IGNORE INTO mon_an (id_mon_an, id_danh_muc, ten_mon_an, gia, trang_thai, hinh_anh) VALUES ('MA03', 'DM_NL', 'Lẩu Xương', 399000, 'ConHang', 'images/Web Trang chủ/Lẩu 3.webp');
+INSERT IGNORE INTO mon_an (id_mon_an, id_danh_muc, ten_mon_an, gia, trang_thai, hinh_anh) VALUES ('MA04', 'DM_NL', 'Lẩu Sữa Mala', 499000, 'HetHang', 'images/Web Trang chủ/Lẩu 4.webp');
+INSERT IGNORE INTO mon_an (id_mon_an, id_danh_muc, ten_mon_an, gia, trang_thai, hinh_anh) VALUES ('MA05', 'DM_DAV', 'Bánh quẩy nhỏ', 10000, 'ConHang', 'images/Web Trang chủ/Ăn vặt 1.png');
+INSERT IGNORE INTO mon_an (id_mon_an, id_danh_muc, ten_mon_an, gia, trang_thai, hinh_anh) VALUES ('MA07', 'DM_DAV', 'Viên Tôm', 30000, 'HetHang', 'images/Web Trang chủ/Ăn vặt 2.png');
+INSERT IGNORE INTO mon_an (id_mon_an, id_danh_muc, ten_mon_an, gia, trang_thai, hinh_anh) VALUES ('MA08', 'DM_DAV', 'Màn thầu chiên', 60000, 'ConHang', 'images/Web Trang chủ/Ăn vặt 3.png');
+INSERT IGNORE INTO mon_an (id_mon_an, id_danh_muc, ten_mon_an, gia, trang_thai, hinh_anh) VALUES ('MA09', 'DM_DAV', 'Tempura tôm', 80000, 'ConHang', 'images/Web Trang chủ/Ăn vặt 4.webp');
+INSERT IGNORE INTO mon_an (id_mon_an, id_danh_muc, ten_mon_an, gia, trang_thai, hinh_anh) VALUES ('MA10', 'DM_DAV', 'Tôm hùm đất cay Tứ Xuyên', 100000, 'ConHang', 'images/Web Trang chủ/Ăn vặt 5.jpg');
+INSERT IGNORE INTO mon_an (id_mon_an, id_danh_muc, ten_mon_an, gia, trang_thai, hinh_anh) VALUES ('MA11', 'DM_DAV', 'Bánh gạo nếp', 20000, 'ConHang', 'images/Web Trang chủ/Ăn vặt 6.jpg');
+INSERT IGNORE INTO mon_an (id_mon_an, id_danh_muc, ten_mon_an, gia, trang_thai, hinh_anh) VALUES ('MA12', 'DM_TU', 'Hồng trà sữa', 25000, 'ConHang', 'images/Web Trang chủ/Nước 1.webp');
+INSERT IGNORE INTO mon_an (id_mon_an, id_danh_muc, ten_mon_an, gia, trang_thai, hinh_anh) VALUES ('MA13', 'DM_TU', 'Nước cam', 20000, 'ConHang', 'images/Web Trang chủ/Nước 2.png');
+INSERT IGNORE INTO mon_an (id_mon_an, id_danh_muc, ten_mon_an, gia, trang_thai, hinh_anh) VALUES ('MA14', 'DM_TU', 'Nước dưa hấu', 25000, 'ConHang', 'images/Web Trang chủ/Nước 3.png');
+INSERT IGNORE INTO mon_an (id_mon_an, id_danh_muc, ten_mon_an, gia, trang_thai, hinh_anh) VALUES ('MA15', 'DM_TU', 'Trà đào', 25000, 'HetHang', 'images/Web Trang chủ/Nước 4.webp');
+INSERT IGNORE INTO mon_an (id_mon_an, id_danh_muc, ten_mon_an, gia, trang_thai, hinh_anh) VALUES ('MA16', 'DM_TU', 'Trà hoa lạc thần', 50000, 'ConHang', 'images/Web Trang chủ/Nước 5.webp');
+INSERT IGNORE INTO mon_an (id_mon_an, id_danh_muc, ten_mon_an, gia, trang_thai, hinh_anh) VALUES ('MA17', 'DM_TU', 'Matcha sữa chua', 40000, 'ConHang', 'images/Web Trang chủ/Nước 6.png');
+INSERT IGNORE INTO mon_an (id_mon_an, id_danh_muc, ten_mon_an, gia, trang_thai, hinh_anh) VALUES ('MA18', 'DM_MC_T', 'Thăn lõi vai Bò', 100000, 'ConHang', 'images/Web Trang chủ/Thịt 1.png');
+INSERT IGNORE INTO mon_an (id_mon_an, id_danh_muc, ten_mon_an, gia, trang_thai, hinh_anh) VALUES ('MA19', 'DM_MC_T', 'Thịt bò bông tuyết', 110000, 'ConHang', 'images/Web Trang chủ/Thịt 2.png');
+INSERT IGNORE INTO mon_an (id_mon_an, id_danh_muc, ten_mon_an, gia, trang_thai, hinh_anh) VALUES ('MA20', 'DM_MC_T', 'Nạc dăm heo', 80000, 'ConHang', 'images/Web Trang chủ/Thịt 3.png');
+INSERT IGNORE INTO mon_an (id_mon_an, id_danh_muc, ten_mon_an, gia, trang_thai, hinh_anh) VALUES ('MA21', 'DM_MC_T', 'Sườn bò rút xương', 130000, 'ConHang', 'images/Web Trang chủ/Thịt 4.webp');
+INSERT IGNORE INTO mon_an (id_mon_an, id_danh_muc, ten_mon_an, gia, trang_thai, hinh_anh) VALUES ('MA22', 'DM_MC_HS', 'Tôm Sú', 300000, 'ConHang', 'images/Web Trang chủ/HS1.jpg');
+INSERT IGNORE INTO mon_an (id_mon_an, id_danh_muc, ten_mon_an, gia, trang_thai, hinh_anh) VALUES ('MA23', 'DM_MC_HS', 'Bao tử cá basa', 349000, 'ConHang', 'images/Web Trang chủ/HS2.jpg');
+INSERT IGNORE INTO mon_an (id_mon_an, id_danh_muc, ten_mon_an, gia, trang_thai, hinh_anh) VALUES ('MA24', 'DM_MC_HS', 'Sò điệp viên QQ', 399000, 'ConHang', 'images/Web Trang chủ/HS3.webp');
+INSERT IGNORE INTO mon_an (id_mon_an, id_danh_muc, ten_mon_an, gia, trang_thai, hinh_anh) VALUES ('MA25', 'DM_MC_HS', 'Bạch tuộc baby', 199000, 'ConHang', 'images/Web Trang chủ/HS4.jpg');
+INSERT IGNORE INTO mon_an (id_mon_an, id_danh_muc, ten_mon_an, gia, trang_thai, hinh_anh) VALUES ('MA26', 'DM_MC_BM', 'Mì ăn liền', 10000, 'ConHang', 'images/Web Trang chủ/BM1.png');
+INSERT IGNORE INTO mon_an (id_mon_an, id_danh_muc, ten_mon_an, gia, trang_thai, hinh_anh) VALUES ('MA27', 'DM_MC_BM', 'Miến dong', 20000, 'ConHang', 'images/Web Trang chủ/BM2.webp');
+INSERT IGNORE INTO mon_an (id_mon_an, id_danh_muc, ten_mon_an, gia, trang_thai, hinh_anh) VALUES ('MA28', 'DM_MC_BM', 'Miến khoai lang', 15000, 'ConHang', 'images/Web Trang chủ/BM3.png');
+INSERT IGNORE INTO mon_an (id_mon_an, id_danh_muc, ten_mon_an, gia, trang_thai, hinh_anh) VALUES ('MA29', 'DM_MC_BM', 'Bánh gạo', 30000, 'ConHang', 'images/Web Trang chủ/BM4.png');
+INSERT IGNORE INTO mon_an (id_mon_an, id_danh_muc, ten_mon_an, gia, trang_thai, hinh_anh) VALUES ('MA30', 'DM_MC_R', 'Rau muống', 20000, 'ConHang', 'images/Web Trang chủ/R1.png');
+INSERT IGNORE INTO mon_an (id_mon_an, id_danh_muc, ten_mon_an, gia, trang_thai, hinh_anh) VALUES ('MA31', 'DM_MC_R', 'Rau mồng tơi', 20000, 'ConHang', 'images/Web Trang chủ/R2.png');
+INSERT IGNORE INTO mon_an (id_mon_an, id_danh_muc, ten_mon_an, gia, trang_thai, hinh_anh) VALUES ('MA32', 'DM_MC_R', 'Cải thảo', 20000, 'ConHang', 'images/Web Trang chủ/R3.png');
+INSERT IGNORE INTO mon_an (id_mon_an, id_danh_muc, ten_mon_an, gia, trang_thai, hinh_anh) VALUES ('MA33', 'DM_MC_R', 'Rau thập cẩm', 30000, 'ConHang', 'images/Web Trang chủ/R4.png');
+INSERT IGNORE INTO mon_an (id_mon_an, id_danh_muc, ten_mon_an, gia, trang_thai, hinh_anh) VALUES ('MA34', 'DM_NC', 'Nước chấm thanh vị', 5000, 'ConHang', 'images/Web Trang chủ/NC1.png');
+INSERT IGNORE INTO mon_an (id_mon_an, id_danh_muc, ten_mon_an, gia, trang_thai, hinh_anh) VALUES ('MA35', 'DM_NC', 'Nước chấm hải sản', 5000, 'ConHang', 'images/Web Trang chủ/NC2.png');
+INSERT IGNORE INTO mon_an (id_mon_an, id_danh_muc, ten_mon_an, gia, trang_thai, hinh_anh) VALUES ('MA36', 'DM_NC', 'Nước chấm chua ngọt', 5000, 'ConHang', 'images/Web Trang chủ/NC3.png');
+INSERT IGNORE INTO mon_an (id_mon_an, id_danh_muc, ten_mon_an, gia, trang_thai, hinh_anh) VALUES ('MA37', 'DM_NC', 'Nước chấm mè', 5000, 'ConHang', 'images/Web Trang chủ/NC4.png');
+

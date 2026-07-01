@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;400;500;700;900&display=swap" rel="stylesheet">
+    <title>HaceLao - Trải nghiệm ẩm thực lẩu</title>
+    <link rel="stylesheet" href="../../shared/css/header_footer.css">
+    <link rel="stylesheet" href="../../shared/css/danh_muc.css">
+    <link rel="stylesheet" href="../../shared/css/danh_muc_lau_web.css">
+    <link rel="stylesheet" href="../../shared/css/popup_chitietmon.css">
+    <link rel="stylesheet" href="css/thucdon.css">
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+    <!--1. HEADER -->
+    <div id="header-ly"></div>
+
+    <main>
+        <section class="menu-categories">
+            <div class="category-card active" data-category="DM_NL">
+                <img src="images/icon-nuoc-lau.png" alt="Nước lẩu">
+                <p>Nước lẩu</p>
+            </div>
+            <div class="category-card" data-category="DM_MC">
+                <img src="images/icon-mon-chinh.png" alt="Món chính">
+                <p>Món chính</p>
+            </div>
+            <div class="category-card" data-category="DM_NC">
+                <img src="images/icon-nuoc-cham.png" alt="Nước chấm">
+                <p>Nước chấm</p>
+            </div>
+            <div class="category-card" data-category="DM_DAV">
+                <img src="images/icon-do-an-vat.png" alt="Đồ ăn vặt">
+                <p>Đồ ăn vặt</p>
+            </div>
+            <div class="category-card" data-category="DM_TU">
+                <img src="images/icon-thuc-uong.png" alt="Thức uống">
+                <p>Thức uống</p>
+            </div>
+        </section>
+
+        <div class="thucdon-header text-center" id="main-header">
+            <h2 id="category-title" class="nuoc-lau">Nước lẩu</h2>
+        </div>
+        
+        <div class="layout-wrapper">
+            <aside id="sidebar-filter" class="sidebar-filter" style="display: none;">
+                <h3>BỘ LỌC TÌM KIẾM</h3>
+                <hr>
+                <ul class="filter-list">
+                    <li class="filter-item active" data-subcategory="DM_MC_T">Món Thịt</li>
+                    <li class="filter-item" data-subcategory="DM_MC_HS">Hải Sản</li>
+                    <li class="filter-item" data-subcategory="DM_MC_BM">Món Bún, Mì</li>
+                    <li class="filter-item" data-subcategory="DM_MC_R">Rau</li>
+                </ul>
+            </aside>
+
+            <section class="dish-grid" id="dish-list">
+                <!-- Dữ liệu món ăn sẽ được render bằng JS vào đây -->
+            </section>
+        </div>
+
+        <div id="dish-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="modal-left">
+                    <img id="modal-img" src="images/lau-ca-chua.png" alt="Lẩu cà chua">
+                </div>
+                
+                <div class="modal-right">
+                    <div class="close-btn">Đóng</div>
+                    <h2 id="modal-name">Lẩu cà chua truyền thống</h2>
+                    <p id="modal-price" class="price">299.000đ</p>
+                    <p id="modal-desc">Mô tả chi tiết món ăn sẽ hiện ở đây...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </main>
+
+    
+    
+    <div id="footer-ly"></div>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="./js/header_footer.js"></script> <!--File này sau này sẽ dùng để code cái dữ liệu mẫu mà bạn nói lúc đầu.-->
+    <script src="../../shared/data/db_monan.js"></script>
+    <script src="./js/menu.js"></script>
+</body>

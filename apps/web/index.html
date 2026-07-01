@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HaceLao - Trải nghiệm ẩm thực lẩu</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../shared/css/header_footer.css">
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+    <!--1. HEADER -->
+    <div id="header-ly"></div>
+
+    <main>
+        <div class="banner-khung"> <!--chứa tấm ảnh bìa nồi lẩu to đùng. Mình dán nhãn nó là hero-->
+            <img src="images/anh-bia-lau.png" alt="Banner HaceLao" class="banner-anh">
+            <div class="container hero-container">
+                <p class="subtitle"> HƠN CẢ MỘT NỒI LẨU</p> <!--Thẻ <p> (paragraph) dùng để tạo ra một đoạn văn bản bình thường-->
+                <h1>Nhà hàng lẩu HaceLao</h1>
+                <p class="desc">Trải nghiệm ẩm thực lẩu HaceLao ngay hôm nay</p> <!--Dòng chữ mô tả nằm bên dưới.-->
+            </div>
+        </div>
+
+        <section class="about"> <!--Nơi kể câu chuyện thương hiệu.-->
+            <div class="container about-container">
+                <div class="about-left"> <!--ép nó nằm ở bên Trái, chuyên chứa văn bản.-->
+                    <h3 class="section-subtitle">CÂU CHUYỆN THƯƠNG HIỆU</h3>
+                    <h2 class="section-title">KHÔNG CHỈ LÀ MỘT BỮA ĂN</h2>
+                    <p class="about-desc">Tại HaceLao, chúng tôi không chỉ phục vụ lẩu mà còn tạo ra những trải nghiệm ẩm thực đáng nhớ. Mỗi bữa ăn là một câu chuyện, mỗi món ăn là một tác phẩm nghệ thuật được chế biến từ sự tận tâm.</p>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <img src="images/icon-flag.png" alt="Thành lập">
+                            <div class="stat-info">
+                                <h4>2026</h4>
+                                <p>HaceLao được thành lập</p>
+                            </div>
+                        </div>
+
+                        <div class="stat-item">
+                            <img src="images/icon-globe.png" alt="Quốc gia">
+                            <div class="stat-info">
+                                <h4>1</h4>
+                                <p>Quốc gia</p>
+                            </div>
+                        </div>
+
+                        <div class="stat-item">
+                            <img src="images/icon-cloche.png" alt="Cửa hàng">
+                            <div class="stat-info">
+                                <h4>2026</h4>
+                                <p>Cửa hàng đầu tiên ở Việt Nam</p>
+                            </div>
+                        </div>
+
+                        <div class="stat-item">
+                            <img src="images/icon-store.png" alt="Nhà hàng">
+                            <div class="stat-info">
+                                <h4>4</h4>
+                                <p>Nhà hàng ở Việt Nam<br>(Tính tới tháng 6/2026)</p>
+                            </div>
+                        </div>
+                    </div>   
+                </div>
+                <div class="about-right">
+                    <img src="images/anh-gioi-thieu.png" alt="Hình ảnh các món lẩu Hacelao">
+                </div>
+            </div>
+        </section>
+
+        <section class="menu-highlights"> <!--Giới thiệu các món ăn nổi bật-->
+            <div class="container">
+                <div class="section-header text-center"> <!--hộp chứa riêng phần tiêu đề. Nhãn text-center có nghĩa là "hãy căn giữa các chữ ở trong hộp này".-->
+                    <h3 class="section-subtitle">Thực Đơn Của Chúng Tôi</h3>
+                    <h2 class="section-title">MỖI MÓN ĂN ĐỀU ĐƯỢC CHUẨN BỊ TỈ MỈ</h2>
+                </div>
+                <div class="menu-grid"> <!--Tạo một cái hộp trống. Lát nữa mình sẽ nhét 3 món ăn vào trong cái hộp này và dùng code chia cột để chúng xếp thành 3 ô nằm ngang.-->
+                    <div class="menu-item">
+                        <img src="images/nuoc-lau.png" alt="Nước Lẩu">
+                        <h3>Nước Lẩu</h3>
+                        <p>Các loại nước lẩu truyền thống đa dạng, đậm đà hương vị, mang đến trải nghiệm thơm ngon và trọn vị cho món lẩu của bạn. </p>
+                    </div>
+
+                    <div class="menu-item">
+                        <img src="images/mon-an.png" alt="Món Ăn">
+                        <h3>Món Ăn</h3>
+                        <p>Tuyển chọn từ thịt cao cấp và hải sản tươi ngon, giữ trọn vị ngọt tự nhiên. Kết hợp cùng các loại viên đặc trưng, rau củ và nấm, mang đến sự đa dạng hương vị.</p>
+                    </div>
+
+                    <div class="menu-item">
+                        <img src="images/nuoc-cham.png" alt="Nước Chấm">
+                        <h3>Nước Chấm</h3>
+                        <p>Đa dạng các loại nước chấm đậm đà, cho phép tùy chỉnh theo sở thích. Dễ dàng tạo nên hương vị riêng, từ cay nồng đến thanh nhẹ, phù hợp với mọi khẩu vị.</p>
+                    </div>
+                </div> 
+            </div>
+        </section>
+    </main>
+
+    <div id="footer-ly"></div>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="./js/header_footer.js"></script> 
+</body>
+</html>

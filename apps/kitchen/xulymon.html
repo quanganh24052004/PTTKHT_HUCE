@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HaceLao Bếp - Xử lý Đơn hàng</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css?v=6">
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+</head>
+<body>
+    <div class="layout">
+        <aside class="sidebar">
+            <div class="logo">
+                <img src="images/chef.png" alt="HaceLao Chef" onerror="this.style.display='none'">
+                <span class="logo-text" style="color: #000; font-size: 18px;">HaceLao Chef</span>
+            </div>
+            <ul class="nav-links">
+                <li class="active"><a href="xulymon.html">Đơn hàng</a></li>
+                <li><a href="quanlymon.html">Quản lý thực đơn</a></li>
+            </ul>
+            <div class="sidebar-user" onclick="showLogoutModal()">
+                <img src="../cashier/images/user.png" alt="User">
+                <div class="sidebar-user-info">
+                    <div class="sidebar-user-name" id="sidebarUserName">Nguyễn Văn A</div>
+                    <div class="sidebar-user-role">Đầu bếp chính</div>
+                </div>
+                <span style="margin-left: auto; color: #888; font-weight: bold;">&#8964;</span>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="header">
+                <h2>Đơn hàng</h2>
+                <div style="display: flex; align-items: center; gap: 20px;">
+                    <div style="position: relative;">
+                        <input type="text" id="kdsSearchInput" placeholder="Tìm kiếm món ăn" style="padding: 10px 40px; border-radius: 20px; border: 1px solid #ccc; width: 300px; outline: none;" oninput="renderKDS()">
+                        <span style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #888;">🔍</span>
+                    </div>
+                </div>
+            </header>
+            
+            <div class="kds-filters" style="display:flex; gap:15px; margin: 20px 30px;">
+                <button class="kds-filter-btn active" onclick="filterKds('ALL')">Tất cả</button>
+                <button class="kds-filter-btn" onclick="filterKds('DaXong')">Đã xong</button>
+                <button class="kds-filter-btn" onclick="filterKds('DangNau')">Đang nấu</button>
+                <button class="kds-filter-btn" onclick="filterKds('DaTiepNhan')">Hàng đợi</button>
+            </div>
+            
+            <div class="kds-list-container" id="kdsList" style="padding: 0 30px; overflow-y: auto; flex-grow: 1;">
+                <!-- Rendered by JS -->
+            </div>
+        </main>
+    </div>
+
+    <!-- Logout Modal -->
+    <div id="logoutModal" class="modal" style="display: none;">
+        <div class="modal-content" style="max-width: 400px; text-align: center; border-radius: 15px; position: relative;">
+            <span class="close" onclick="closeLogoutModal()" style="position: absolute; right: 20px; top: 15px; font-size: 24px; cursor: pointer;">&times;</span>
+            <h3 style="margin-bottom: 20px; font-size: 20px; color: #333;">Xác nhận</h3>
+            <p style="margin-bottom: 30px; color: #555; font-size: 16px;">Bạn có đồng ý đăng xuất không?</p>
+            <div style="display: flex; gap: 15px; justify-content: center;">
+                <button class="btn-orange" style="padding: 10px 40px; border-radius: 25px; font-size: 16px;" onclick="confirmLogout()">Đồng ý</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/kitchen.js?v=10"></script>
+    <script>
+        function showLogoutModal() { document.getElementById('logoutModal').style.display = 'flex'; }
+        function closeLogoutModal() { document.getElementById('logoutModal').style.display = 'none'; }
+        function confirmLogout() {
+            localStorage.removeItem('nhanVienInfo');
+            window.location.href = '../login.html';
+        }
+        
+        window.onload = () => {
+            let nvInfo = localStorage.getItem('nhanVienInfo');
+            if (!nvInfo) {
+                window.location.href = '../login.html';
+                return;
+            }
+            try {
+                let info = JSON.parse(nvInfo);
+                if (info.vaiTro !== 'DauBep') {
+                    window.location.href = '../login.html';
+                    return;
+                }
+                document.getElementById('sidebarUserName').innerText = info.tenDangNhap || 'Đầu bếp chính';
+            } catch(e) {
+                window.location.href = '../login.html';
+                return;
+            }
+            initKDS();
+        };
+    </script>
+</body>
+</html>

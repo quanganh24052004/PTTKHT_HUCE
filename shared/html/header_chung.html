@@ -1,0 +1,29 @@
+<header class="header"> <!--Chữ class="header" giống như bạn đang dán một cái nhãn tên cho nó, để sang file CSS bạn gọi đúng tên này ra mà tô màu.-->
+        <div class="header-container"> <!--Thẻ <div> tạo ra một cái hộp gom toàn bộ nội dung bên trong lại và giữ chúng nằm ngay ngắn ở giữa màn hình, không bị trôi tuột ra sát 2 mép viền của máy tính.-->
+            <div class="logo">
+                <img src="images/logo-nha-hang.png" alt="HaceLao Logo">
+                <span class="brand-name">HaceLao</span>
+            </div>
+
+            <nav class="main-nav"> <!--Thẻ <nav> dùng để báo cho máy tính biết: "Khu vực này là thanh menu chứa các đường link chuyển trang".-->
+                <ul>
+                    <li><a href="index.html">Trang chủ</a></li> <!--class="active" đánh dấu đây là trang đang được chọn.-->
+                    <li><a href="thucdon.html">Thực đơn</a></li>
+                    <li><a href="chinhanh.html">Chi nhánh</a></li>
+                    <li><a href="gioithieu.html">Về HaceLao</a></li>
+                </ul>
+            </nav>
+
+            <div class="header-actions">
+                <div class="search-box"> 
+                    <img src="images/kinh-lup.png" alt="kính lúp" class="icon-kinh-lup">
+                    <input type="text" placeholder="Tìm kiếm...">
+                    <div id="search-dropdown" class="search-dropdown" style="display: none;"></div>
+                </div>
+
+                <div class="dang-nhap">
+                    <button class="nut-dang-nhap-rieng" onclick="window.location.href='../login.html'">Đăng nhập</button> 
+                </div>
+            </div>
+        </div>
+    </header>

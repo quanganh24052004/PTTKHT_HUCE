@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HaceLao Thu ngân - Thanh toán</title>
+    <link rel="stylesheet" href="css/style.css?v=5">
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+</head>
+<body>
+    <div class="layout">
+        <aside class="sidebar">
+            <div class="logo">
+                <img src="images/Rectangle 8.png" alt="HaceLao Cashier" onerror="this.style.display='none'">
+                <span class="logo-text" style="color: #000; font-size: 18px;">Thu ngân</span>
+            </div>
+            <ul class="nav-links">
+                <li class="active"><a href="sodoban.html">Sơ đồ bàn</a></li>
+                <li><a href="quanlyhoadon.html">Quản lý hóa đơn</a></li>
+            </ul>
+            <div class="sidebar-user" onclick="showLogoutModal()">
+                <img src="images/user.png" alt="User">
+                <div class="sidebar-user-info">
+                    <div class="sidebar-user-name" id="sidebarUserName">Nhân viên</div>
+                    <div class="sidebar-user-role">Thu ngân</div>
+                </div>
+                <span style="margin-left: auto; color: #888; font-weight: bold;">&#8964;</span>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="header">
+                <h2 id="ttTableTitle">Thanh toán Bàn</h2>
+                <button class="btn btn-gray" onclick="window.location.href='sodoban.html'">Quay lại</button>
+            </header>
+            
+            <div class="payment-layout">
+                <!-- Left: Bill -->
+                <div class="bill-section">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                        <h3 style="color:#34495E; margin:0;">Chi tiết Hóa đơn</h3>
+                        <span id="ttInvoiceId" style="font-weight:bold; color:#7F8C8D;">Mã HĐ: --</span>
+                    </div>
+                    <div id="ttBillList" style="flex:1; overflow-y:auto;">
+                        <!-- Rendered by JS -->
+                    </div>
+                    <div class="bill-total" id="ttTotal">Tổng cộng: 0 đ</div>
+                </div>
+                
+                <!-- Right: Payment Action -->
+                <div class="payment-section">
+                    <h3 style="margin-bottom:15px; color:#34495E;">Khách hàng (Tích điểm)</h3>
+                    <input type="text" id="customerPhone" class="input-box" placeholder="Nhập SĐT khách hàng...">
+                    
+                    <!-- Khách hàng cũ -->
+                    <div id="customerInfo" style="margin-top: 10px; font-weight: bold; color: #27AE60; display: none;"></div>
+                    <div id="redeemBox" style="margin-top: 10px; display: none;">
+                        <input type="number" id="diemSuDung" class="input-box" placeholder="Nhập số điểm muốn đổi (1đ = 1000đ)" oninput="calculateChange()">
+                    </div>
+
+                    <!-- Khách hàng mới -->
+                    <div id="newCustomerBox" style="margin-top: 10px; display: none;">
+                        <input type="text" id="customerName" class="input-box" placeholder="Nhập tên khách hàng mới...">
+                        <button class="btn btn-orange" style="margin-top: 10px; width: 100%;" onclick="registerCustomer()">Đăng ký khách hàng</button>
+                    </div>
+                    
+                    <h3 style="margin-top:20px; margin-bottom:15px; color:#34495E;">Phương thức</h3>
+                    <div class="payment-methods">
+                        <button class="method-btn active" id="btnCash" onclick="selectMethod('cash')">Tiền mặt</button>
+                        <button class="method-btn" id="btnQR" onclick="selectMethod('qr')">Quét mã QR</button>
+                    </div>
+                    
+                    <div id="cashBox" style="margin-top: 15px;">
+                        <input type="number" id="tienKhachDua" class="input-box" placeholder="Nhập số tiền khách đưa..." oninput="calculateChange()">
+                        <div id="tienThuaDisplay" style="margin-top: 10px; font-size: 16px; font-weight: bold; color: #E74C3C;">Tiền thừa: 0 đ</div>
+                    </div>
+
+                    <div class="qr-box" id="qrBox" style="display: none;">
+                        <img src="../../design/cashier/QR thanh toán.png" alt="QR Code" style="max-width: 200px;">
+                        <p style="margin-top:10px; color:#7F8C8D; font-size:14px;">Quét mã để thanh toán</p>
+                    </div>
+                    
+                    <button class="btn btn-blue" style="width:100%; padding:15px; font-size:18px; margin-top:20px;" onclick="xacNhanThanhToan()">XÁC NHẬN THANH TOÁN</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Logout Modal -->
+    <div id="logoutModal" class="modal-overlay-logout" style="display: none;">
+        <div class="modal-content-logout">
+            <span class="close" onclick="closeLogoutModal()" style="position: absolute; right: 20px; top: 15px; font-size: 24px; cursor: pointer;">&times;</span>
+            <h3 style="font-size: 20px;">Xác nhận</h3>
+            <p style="font-size: 16px;">Bạn có đồng ý đăng xuất không?</p>
+            <div style="display: flex; gap: 15px; justify-content: center;">
+                <button class="btn btn-orange" style="padding: 10px 40px; border-radius: 25px; font-size: 16px;" onclick="confirmLogout()">Đồng ý</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/cashier.js?v=14"></script>
+    <script>
+        function showLogoutModal() { document.getElementById('logoutModal').style.display = 'flex'; }
+        function closeLogoutModal() { document.getElementById('logoutModal').style.display = 'none'; }
+        function confirmLogout() {
+            localStorage.removeItem('nhanVienInfo');
+            window.location.href = '../login.html';
+        }
+        
+        window.onload = () => { 
+            let nvInfo = localStorage.getItem('nhanVienInfo');
+            if (!nvInfo) {
+                alert("nvInfo is null, redirecting to login");
+                window.location.href = '../login.html';
+                return;
+            }
+            try {
+                let info = JSON.parse(nvInfo);
+                if (info.vaiTro !== 'ThuNgan') {
+                    alert("vaiTro is not ThuNgan (it is " + info.vaiTro + "), redirecting to login");
+                    window.location.href = '../login.html';
+                    return;
+                }
+                document.getElementById('sidebarUserName').innerText = info.tenDangNhap || 'Nhân viên';
+            } catch(e) {
+                alert("JSON parse error: " + e.message);
+                window.location.href = '../login.html';
+                return;
+            }
+            initThanhToan(); 
+        };
+    </script>
+</body>
+</html>

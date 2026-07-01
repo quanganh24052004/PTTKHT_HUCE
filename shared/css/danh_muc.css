@@ -1,0 +1,95 @@
+.menu-categories {
+    display: flex; /* Xếp hàng ngang */
+    justify-content: center; /* Căn giữa màn hình */
+    gap: 24px; /* Khoảng cách giữa các ô */
+    margin: 30px 0;
+}
+
+.category-card {
+    background-color: #f5f5f5; /* Màu nền xám nhạt */
+    width: 210px;
+    height: 240px;
+    padding: 15px;
+    border-radius: 20px; /* Bo góc tròn */
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
+}
+
+.category-card img {
+    /* Tăng kích thước ảnh lên đáng kể */
+    width: 140px; 
+    height: 140px;
+    margin-bottom: 15px;
+    
+    /* Giúp ảnh không bị méo nếu tỉ lệ ảnh không phải hình vuông chuẩn */
+    object-fit: contain;
+    background-color: transparent; /* Nếu ảnh có nền thì nên để trong suốt */
+    
+}
+
+.category-card p {
+    color: #FC0000; /* Màu chữ như trong ảnh */
+    font-weight: 600;
+    user-select: none;
+    margin: 16px;
+    font-size: 24px;
+}
+
+/* Hiệu ứng ô đang được chọn (viền đỏ) */
+.category-card.active {
+    border: 2px solid #FC0000;
+    background-color: #fff; /* Nền trắng khi active */
+}
+
+.category-card:hover {
+    border: 2px solid #FC0000;
+}
+
+/* ==========================================================
+   RESPONSIVE (ĐIỆN THOẠI & TABLET) CHO DANH MỤC LỚN
+========================================================== */
+@media (max-width: 1024px) {
+    .menu-categories {
+        gap: 15px;
+        padding: 0 15px;
+    }
+    .category-card {
+        width: 180px;
+        height: 220px;
+    }
+    .category-card p {
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .menu-categories {
+        justify-content: flex-start;
+        overflow-x: auto; /* Cho phép cuộn ngang */
+        padding-bottom: 10px;
+        -webkit-overflow-scrolling: touch;
+    }
+    .menu-categories::-webkit-scrollbar {
+        height: 4px;
+    }
+    .menu-categories::-webkit-scrollbar-thumb {
+        background: #ccc;
+        border-radius: 4px;
+    }
+    .category-card {
+        flex-shrink: 0; /* Không cho thu nhỏ thẻ */
+        width: 140px;
+        height: 180px;
+        padding: 10px;
+    }
+    .category-card img {
+        width: 100px;
+        height: 100px;
+        margin-bottom: 5px;
+    }
+    .category-card p {
+        font-size: 16px;
+        margin: 10px 0;
+    }
+}

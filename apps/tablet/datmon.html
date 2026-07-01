@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HaceLao - Tablet</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css?v=9">
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+</head>
+<body>
+    <!-- Top Navigation -->
+    <header class="top-nav">
+        <div class="logo">
+            <img src="../web/images/logo-nha-hang.png" alt="HaceLao Logo" style="width:40px; height:40px; object-fit:cover; border-radius:50%;">
+            <span class="logo-text">HaceLao</span>
+        </div>
+        <div class="table-info">Bàn số 1</div>
+        <div class="search-bar" style="position: relative;">
+            <input type="text" id="searchInput" placeholder="Tìm kiếm...">
+            <div id="searchDropdown" class="search-dropdown" style="display: none; position: absolute; top: 120%; left: 0; right: 0; background: white; border: 1px solid #ddd; border-radius: 8px; max-height: 400px; overflow-y: auto; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.1);"></div>
+        </div>
+        <div class="actions">
+            <button class="btn-orange" style="background:#FFF; color:#FF6B00; border:1px solid #FF6B00; margin-right: 10px;" onclick="showInvoice()">Hóa đơn</button>
+            <button class="btn-orange" onclick="showOrders()">Đơn đặt</button>
+            <div class="cart-icon" onclick="showCart()">
+                🛒 <span class="cart-badge" id="cartBadge">0</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Categories (Top Horizontal) -->
+        <section class="categories-top" id="mainCategories">
+            <!-- Rendered by JS -->
+        </section>
+
+        <h2 id="categoryTitle" style="color: red; text-align: center; margin: 30px 0; font-size: 32px; font-weight: 800;">Nước lẩu</h2>
+
+        <div id="subCategoryBar" style="display: none; justify-content: center; gap: 15px; margin-bottom: 30px; flex-wrap: wrap; padding: 0 20px;"></div>
+
+        <div class="menu-container" style="display: flex; justify-content: center;">
+            <!-- Items Grid -->
+            <section class="items-grid" id="itemsGrid">
+                <!-- Rendered by JS -->
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container" style="display: flex; justify-content: space-between; align-items: flex-start; max-width: 1200px; margin: 0 auto; width: 100%; gap: 40px;">
+            <div class="footer-col brand-col" style="flex: 1;">
+                <img src="../web/images/logo-nha-hang.png" alt="Logo HaceLao" style="width: 80px; margin-bottom: 10px;">
+                <br>
+                <span class="brand-name" style="font-size: 24px; font-weight: 700; color: #FF6B00;">HaceLao</span>
+            </div>
+            <div class="footer-col links-col" style="flex: 1;">
+                <h4 style="margin-bottom: 15px; font-size: 18px;">Truy cập nhanh</h4>
+                <ul class="footer-menu" style="list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; color: #aaa; font-size: 14px;">
+                    <li><a href="../web/index.html" style="color: #aaa; text-decoration: none;">Trang chủ</a></li>
+                    <li><a href="../web/thucdon.html" style="color: #aaa; text-decoration: none;">Thực đơn</a></li>
+                    <li><a href="../web/chinhanh.html" style="color: #aaa; text-decoration: none;">Chi nhánh</a></li>
+                    <li><a href="../web/gioithieu.html" style="color: #aaa; text-decoration: none;">Về HaceLao</a></li>
+                    <li><span style="color: #aaa;">Tin tức</span></li>
+                    <li><span style="color: #aaa;">Liên hệ</span></li>
+                </ul>
+            </div>
+            <div class="footer-col contact-col" style="flex: 1;">
+                <p style="color: #aaa; font-size: 14px; margin-bottom: 10px; line-height: 1.5;"><strong>Địa chỉ:</strong> Tòa nhà H1, Tầng 5, Trường Đại học Xây dựng Hà Nội, số 10 Trần Đại Nghĩa, Phường Bạch Mai, TP Hà Nội, Việt Nam</p>
+                <p style="color: #aaa; font-size: 14px;"><strong>Email:</strong> hacelao@huce.com</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Overlay / Modals -->
+    <div id="overlay" class="overlay" onclick="closeModals()"></div>
+
+    <!-- Item Details Modal -->
+    <div id="itemModal" class="modal item-modal">
+        <div class="item-modal-content" id="itemModalBody">
+            <!-- Rendered by JS -->
+        </div>
+    </div>
+
+    <!-- Cart Modal -->
+    <div id="cartModal" class="modal">
+        <div class="modal-header">
+            <h3 style="display:flex; align-items:center; gap:15px;">Giỏ hàng <label style="font-size:14px; font-weight:normal; cursor:pointer;"><input type="checkbox" id="selectAllCart" checked onchange="toggleSelectAllCart()" style="accent-color:#FF6B00; width:16px; height:16px;"> Chọn tất cả</label></h3>
+            <button class="btn-close-small" onclick="closeModals()">Đóng</button>
+        </div>
+        <div class="modal-body" id="cartItems">
+            <!-- Rendered by JS -->
+        </div>
+        <div class="modal-footer">
+            <h2 class="total-price">Tổng tiền: <span id="cartTotal">0 đ</span></h2>
+            <button class="btn-orange" onclick="confirmOrder()">Xác nhận</button>
+        </div>
+    </div>
+
+    <!-- Orders Modal -->
+    <div id="ordersModal" class="modal">
+        <div class="modal-header">
+            <h2>Đơn hàng đã đặt</h2>
+            <button class="btn-orange" onclick="closeModals()">Đóng</button>
+        </div>
+        <div class="modal-body" id="orderItems">
+            <!-- Rendered by JS -->
+        </div>
+        <div class="modal-footer">
+            <div class="total-price" id="ordersTotal">0 đ</div>
+        </div>
+    </div>
+
+    <!-- Invoice Modal -->
+    <div id="invoiceModal" class="modal">
+        <div class="modal-header">
+            <h2>Hóa đơn tạm tính</h2>
+            <button class="btn-orange" onclick="closeModals()">Đóng</button>
+        </div>
+        <div class="modal-body" id="invoiceItems">
+            <!-- Rendered by JS -->
+        </div>
+        <div class="modal-footer">
+            <h2 class="total-price">Tổng tiền: <span id="invoiceTotal">0 đ</span></h2>
+        </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script src="js/app.js?v=13"></script>
+</body>
+</html>

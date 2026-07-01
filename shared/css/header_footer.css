@@ -1,0 +1,461 @@
+/* ==========================================================
+   1. CÀI ĐẶT BIẾN (VARIABLES) VÀ NỀN MÓNG
+========================================================== */
+
+/* :root là nơi chứa các "Biến". Giống như bạn pha sẵn các thùng sơn màu cam, màu đen... để lát nữa gọi tên ra dùng cho nhanh, nhỡ sau này muốn đổi màu nhà hàng thì chỉ cần sửa ở đây 1 lần. */
+:root {
+    --primary-color: #FF6B00; /* Màu cam đặc trưng của HaceLao */
+    --text-dark: #000000;     /* Màu đen cho chữ thường */
+    --footer-bg: #2D2422;     /* Màu nâu đen của chân trang */
+    --max-width: 1200px;      /* Giới hạn độ rộng tối đa của nội dung web */
+}
+
+/* Ký hiệu * (dấu sao) đại diện cho TẤT CẢ mọi thứ trên web. 
+   Đoạn này gọi là "CSS Reset". Trình duyệt thường tự động thêm các khoảng trống (margin, padding) dư thừa. Mình phải reset chúng về 0 để tự mình kiểm soát. */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* Giúp tính toán kích thước hộp không bị tràn viền */
+}
+
+/* Cài đặt mặc định cho toàn bộ phần thân web */
+body {
+    font-family: 'Segoe UI', 'Tahoma', 'Geneva', 'Verdana', 'sans-serif', 'Thin'; /* Cài font chữ */
+    color: var(--text-dark); /* Dùng thùng sơn màu đen đã pha ở trên */
+}
+
+/* Xóa gạch chân xấu xí mặc định của các đường link */
+a {
+    text-decoration: none;
+    color: inherit; /* Cho link lấy màu giống chữ bình thường */
+}
+
+/* Xóa các dấu chấm tròn đen xấu xí của danh sách */
+ul {
+    list-style: none;
+}
+
+.header {
+    background-color: FFFFFF;
+    padding: 8px ; /* Đẩy nội dung bên trong cách viền trên và dưới.*/
+    /* Tạo cái bóng mờ mờ dưới gầm Header cho nổi bật */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); 
+
+    position: sticky;
+    top: 0;
+    z-index: 9999;
+    background: #fff;
+}
+
+/* Dùng Flexbox để dàn 3 phần: Logo - Menu - Tìm kiếm xếp thành hàng ngang */
+.header-container {
+    display: flex; /* Bật chế độ Flexbox */
+    justify-content: space-between; /* Đẩy 3 phần ra xa nhau (Trái - Giữa - Phải) */
+    align-items: center; /* Căn cho tất cả đều nằm giữa theo chiều dọc */
+    padding: 0px 20px 0px 20px;
+}
+
+/* Ép ảnh logo và chữ HaceLao nằm ngang cạnh nhau */
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 16px; /* Tạo khoảng cách 10px giữa ảnh và chữ cho thoáng */
+}
+
+/* Chỉnh logo nhỏ lại cho vừa mắt */
+.logo img {
+    height: 64px; 
+}
+
+.brand-name {
+    color: var(--Primary-Main, #FF6B00);
+    /* Logo */
+    font-family: Inter;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 900;
+    line-height: 130%; /* 41.6px */
+    pointer-events: none; /* Vô hiệu hóa hoàn toàn con chuột */
+    user-select: none; /* 1. MỚI THÊM: Ngăn chặn hoàn toàn việc bôi đen chữ */
+}
+
+/* Dàn hàng ngang cho các link trong Menu */
+.main-nav ul {
+    display: flex; /* Ép các chữ Trang chủ, Thực đơn... nằm ngang */
+    align-items: center;
+    gap: 40px;
+    list-style: none; /* xóa chấm tròn */
+    margin: 0;
+    padding: 0;
+}
+
+
+/* Làm đẹp cho chữ trong Menu (Giữ nguyên chuẩn Figma của nhóm) */
+.main-nav a {
+    color: var(--text-dark);
+    font-family: Inter;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 32px; /* 133.333% */
+    /* CÁCH XÓA GẠCH CHÂN KÉP: Tắt gạch chân mặc định của chữ */
+    text-decoration: none; 
+    /* Chuẩn bị sẵn sàng cho hiệu ứng Hover */
+    transition: all 0.3s; 
+}
+
+/* Hiệu ứng gạch chân màu cam cho trang đang chọn (Trang chủ) */
+.main-nav a.active {
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--primary-color); /* Chỉ dùng gạch chân của border */
+    padding-bottom: 5px;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+
+/* Làm đẹp ô tìm kiếm */
+.search-box {
+    display: flex;
+    align-items: center; /* Kính lúp và chữ thẳng hàng ngang */
+    gap: 8px;            /* Khoảng cách giữa kính lúp và chữ */
+    border: 1px solid #ccc;
+    border-radius: 20px; /* Bo tròn như viên thuốc */
+    padding: 5px 15px;   /* Đệm cho khung to ra */
+    background-color: #FFF;
+    position: relative;
+}
+/* Xóa cái viền đen mặc định của ô input cho nó chìm vào khung */
+.search-box input {
+    border: none;
+    outline: none;
+    background: transparent; /* Nền trong suốt */
+
+    width: 150px;
+    color: #000; 
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: 400; 
+    padding: 5px;
+    border: none;
+    outline: none;
+    background: transparent;
+}
+
+/* Chỉnh kính lúp nhỏ lại cho vừa vặn */
+.icon-kinh-lup {
+    width: 16px;
+    height: 16px;
+}
+
+/* Kiểu dáng cho hộp thả xuống (Dropdown) tìm kiếm */
+.search-dropdown {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 0;
+    width: 350px; 
+    background: #FFF;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    max-height: 400px;
+    overflow-y: auto;
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+}
+
+.search-dropdown::-webkit-scrollbar {
+    width: 6px;
+}
+
+.search-dropdown::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 10px;
+}
+
+.search-result-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    cursor: pointer;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background 0.2s;
+}
+
+.search-result-item:last-child {
+    border-bottom: none;
+}
+
+.search-result-item:hover {
+    background: #f8f8f8;
+}
+
+.search-result-item img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-right: 15px;
+}
+
+.search-result-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.search-result-name {
+    font-family: Inter;
+    font-size: 15px;
+    font-weight: 600;
+    color: #222;
+}
+
+.search-result-price {
+    font-family: Inter;
+    font-size: 14px;
+    color: #FF6B00;
+    font-weight: bold;
+    margin-top: 4px;
+}
+
+.search-empty {
+    padding: 20px;
+    text-align: center;
+    font-family: Inter;
+    font-size: 15px;
+    color: #777;
+}
+
+.nut-dang-nhap-rieng {
+    display: flex;
+    padding: 10px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+
+    border-radius: 16px;
+    background: var(--Primary-Main, #FF6B00);
+    color: var(--Text-On-Brand, #FFF);
+
+    /* Body/Regular */
+    font-family: Inter;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500; 
+    line-height: 20px; 
+
+    /* TẨY TRANG: Xóa mọi viền đen, khung đen mặc định */
+    border: none;
+    outline: none;
+
+}
+
+/* Hiệu ứng nảy lên khi rê chuột vào */
+.nut-dang-nhap-rieng:hover {
+    /* 2. TOÁN ĐI: Làm màu nền tối đậm lại như cũ */
+    background: #fa822c; 
+
+    /* 3. HIỆU ỨNG NÚN: Tạo một cái bóng đổ vào BÊN TRONG (inset) */
+    /* Lệnh này tạo ra một viền tối nhẹ ở mép trên bên trong, tạo ảo giác nút bị lõm xuống */
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.08); 
+
+    /* 4. Giữ mượt mà */
+    transition: all 0.1s ease; 
+}
+
+/* Bắt cái hộp hứng Header dính chặt lên nóc màn hình */
+#header-ly {
+    position: sticky;
+    top: 0;
+    z-index: 9999;
+}
+
+/* chân trang */
+
+.footer {
+    background: #2b2321;
+    color: #eee;
+    padding: 60px 0;
+    line-height: 1.7;
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 60px;
+    max-width: 3000px;
+    margin: 0 auto;
+    padding: 0 80px;
+    align-items: center;
+}
+
+.brand-col {
+    display: flex;
+    align-items: center;
+    gap: 26px;
+}
+
+.brand-col img {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+}
+
+.brand-name {
+    font-size: 30px;
+    font-weight: 700;
+    color: var(--Primary-Main, #FF6B00);
+}
+
+.links-col h4 {
+    color: #FFF;
+    font-family: Inter;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 130%; /* 26px */
+}
+
+.footer-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    display: grid;
+    grid-template-columns: repeat(2, auto); /* quan trọng */
+    gap: 10px 200px;
+    justify-content: start;
+    margin-top: 20px;
+}
+
+.footer-menu a, .footer-menu span {
+    color: #ddd;
+    text-decoration: none;
+    transition: 0.3s;
+    font-size: 20px;
+}
+
+.footer-menu a:hover {
+    color: #e63946;
+}
+
+.main-nav a:hover {
+    color: #FF6B00;
+}
+
+/* Màu cam cho trang đang đứng */
+.main-nav a.active {
+    color: #FF6B00 !important; 
+    border-bottom: 2px solid #FF6B00;
+    padding-bottom: 5px;
+}
+
+.contact-col p {
+    color: #ddd;
+    max-width: 530px;
+    font-size: 20px; 
+}
+
+/* ==========================================================
+   RESPONSIVE (ĐIỆN THOẠI & TABLET)
+========================================================== */
+
+/* Tablet & Laptop nhỏ gọn */
+@media (max-width: 1024px) {
+    .main-nav ul {
+        gap: 50px;
+    }
+    .footer-container {
+        padding: 0 40px;
+        gap: 30px;
+        flex-wrap: wrap;
+    }
+    .footer-menu {
+        gap: 10px 50px;
+    }
+}
+
+/* Tablet dọc & Điện thoại ngang */
+@media (max-width: 768px) {
+    .header-container {
+        flex-wrap: wrap;
+        gap: 15px;
+        padding: 10px 20px;
+    }
+    /* Đưa thanh menu cuộn ngang xuống dưới cùng */
+    .main-nav {
+        order: 3;
+        width: 100%;
+        overflow-x: auto; /* Tạo thanh cuộn ngang */
+        padding-bottom: 5px;
+        -webkit-overflow-scrolling: touch;
+    }
+    .main-nav::-webkit-scrollbar {
+        height: 4px; /* Giấu bớt thanh cuộn ngang cho đẹp */
+    }
+    .main-nav::-webkit-scrollbar-thumb {
+        background: #ccc;
+        border-radius: 4px;
+    }
+    .main-nav ul {
+        gap: 30px;
+        justify-content: flex-start;
+        width: max-content; /* Bắt buộc không rớt dòng chữ */
+    }
+    .header-actions {
+        flex: 1;
+        width: 100%;
+        justify-content: space-between;
+    }
+    .search-box {
+        flex: 1; /* Cân đối chiều ngang */
+        max-width: 300px;
+    }
+    .search-dropdown {
+        width: 100%; /* Bằng với ô search */
+    }
+    .footer-container {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    .brand-col {
+        justify-content: center;
+    }
+    .footer-menu {
+        justify-content: center;
+    }
+}
+
+/* Điện thoại di động (iPhone, Samsung...) */
+@media (max-width: 480px) {
+    .main-nav a {
+        font-size: 16px;
+    }
+    .logo img {
+        height: 40px;
+    }
+    .brand-name {
+        font-size: 20px;
+    }
+    .search-box input {
+        width: 100px;
+    }
+    .footer-menu {
+        grid-template-columns: 1fr; /* Đẩy xuống 1 cột duy nhất */
+        gap: 15px;
+    }
+    .footer-menu a {
+        font-size: 16px;
+    }
+    .links-col h4 {
+        font-size: 20px;
+    }
+    .contact-col p {
+        font-size: 16px;
+    }
+}

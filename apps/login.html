@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HaceLao - Đăng nhập Hệ thống</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background: #f0f2f5; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        .login-box { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); width: 400px; text-align: center; }
+        .logo { width: 80px; margin-bottom: 20px; }
+        h2 { color: #333; margin-bottom: 30px; }
+        .input-group { margin-bottom: 20px; text-align: left; }
+        .input-group label { display: block; font-size: 14px; font-weight: 500; color: #555; margin-bottom: 8px; }
+        .input-group input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 15px; transition: border 0.3s; }
+        .input-group input:focus { border-color: #FF6B00; outline: none; }
+        .btn-login { width: 100%; padding: 14px; background: #FF6B00; color: white; border: none; border-radius: 6px; font-size: 16px; font-weight: 600; cursor: pointer; transition: 0.3s; }
+        .btn-login:hover { background: #e65c00; }
+        .error { color: #d32f2f; font-size: 14px; margin-top: 10px; display: none; }
+    </style>
+</head>
+<body>
+    <div class="login-box">
+        <h2>Đăng nhập Hệ thống</h2>
+        <div class="input-group">
+            <label>Tên đăng nhập</label>
+            <input type="text" id="username" placeholder="Nhập tên đăng nhập...">
+        </div>
+        <div class="input-group">
+            <label>Mật khẩu</label>
+            <input type="password" id="password" placeholder="Nhập mật khẩu...">
+        </div>
+        <button class="btn-login" onclick="login()">Đăng nhập</button>
+        <div class="error" id="errorMsg">Tài khoản hoặc mật khẩu không chính xác.</div>
+    </div>
+    <script>
+        async function login() {
+            const user = document.getElementById('username').value;
+            const pass = document.getElementById('password').value;
+            const err = document.getElementById('errorMsg');
+            err.style.display = 'none';
+
+            try {
+                const response = await fetch('http://localhost:8080/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ tenDangNhap: user, matKhau: pass })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    localStorage.setItem('nhanVienInfo', JSON.stringify(data));
+                    
+                    if (data.vaiTro === 'DauBep') {
+                        window.location.href = 'kitchen/quanlymon.html';
+                    } else if (data.vaiTro === 'ThuNgan') {
+                        window.location.href = 'cashier/sodoban.html';
+                    } else {
+                        err.innerText = 'Vai trò không hợp lệ';
+                        err.style.display = 'block';
+                    }
+                } else {
+                    err.innerText = 'Tài khoản hoặc mật khẩu không chính xác.';
+                    err.style.display = 'block';
+                }
+            } catch (error) {
+                err.innerText = 'Không thể kết nối tới máy chủ. Vui lòng kiểm tra lại Backend.';
+                err.style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>

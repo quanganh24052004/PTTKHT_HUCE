@@ -1,0 +1,139 @@
+/* Lớp nền đen mờ bao phủ màn hình */
+.modal {
+    display: none; 
+    position: fixed; 
+    z-index: 9999;
+    left: 0; top: 0; 
+    width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.5); 
+    backdrop-filter: blur(5px);
+}
+
+/* Khung trắng chứa nội dung (bo tròn giống ảnh) */
+.modal-content {
+    background-color: #fff;
+    border-radius: 24px;
+    width: 800px; /* Độ rộng của popup */
+    max-width: 90%; /* Thu nhỏ lại trên điện thoại */
+    padding: 40px;
+    
+    /* Căn giữa tuyệt đối khung trắng ra giữa màn hình */
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+/* Chia 2 cột linh hoạt */
+.modal-body {
+    display: flex;
+    gap: 40px;
+    align-items: center;
+}
+
+/* Cột TRÁI */
+.modal-left {
+    flex: 1;
+    display: flex; 
+    justify-content: center;
+}
+
+.modal-left img {
+    width: 100%;
+    max-width: 350px;
+    object-fit: contain;
+}
+
+/* Cột PHẢI */
+.modal-right {
+    flex: 1;
+    position: relative; /* Để làm mỏ neo cho nút Đóng */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Nút "Đóng" màu cam */
+.close-btn {
+    position: absolute;
+    top: -20px; 
+    right: 0;
+    background-color: #FF6B00;
+    color: #fff;
+    padding: 8px 24px;
+    border-radius: 20px; /* Bo góc tròn viên thuốc */
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.3s ease;
+}
+
+.close-btn:hover {
+    background-color: #e55e00;
+}
+
+/* Kiểu chữ bên trong Popup */
+#modal-name {
+    font-size: 28px;
+    font-weight: 800;
+    color: #111;
+    text-align: center;
+    margin-top: 40px; /* Đẩy chữ xuống nhường chỗ cho nút Đóng */
+    margin-bottom: 20px;
+}
+
+#modal-price {
+    font-size: 24px;
+    font-weight: 700;
+    color: #FF6B00;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+#modal-desc {
+    font-size: 16px;
+    color: #666;
+    line-height: 1.6;
+    text-align: left; /* Đoạn văn thì căn trái cho dễ đọc */
+}
+
+/* ==========================================================
+   RESPONSIVE CHO POPUP
+========================================================== */
+@media (max-width: 768px) {
+    .modal-content {
+        padding: 20px;
+        width: 95%;
+        max-height: 90vh; /* Giới hạn chiều cao */
+        overflow-y: auto; /* Cho phép cuộn nếu thông tin dài */
+    }
+    .modal-body {
+        flex-direction: column;
+        gap: 20px;
+    }
+    .modal-left {
+        width: 100%;
+    }
+    .modal-left img {
+        max-width: 250px;
+    }
+    .modal-right {
+        width: 100%;
+    }
+    .close-btn {
+        top: -10px;
+        right: 0;
+        z-index: 10;
+    }
+    #modal-name {
+        font-size: 24px;
+        margin-top: 30px;
+        margin-bottom: 10px;
+    }
+    #modal-price {
+        font-size: 20px;
+        margin-bottom: 15px;
+    }
+    #modal-desc {
+        font-size: 15px;
+    }
+}

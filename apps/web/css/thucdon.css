@@ -1,0 +1,19 @@
+.thucdon-header {
+    /* Xóa padding-bottom đi, thay bằng height hoặc dùng flex để căn */
+    height: 140px; /* Hoặc độ cao bạn muốn cái hộp tiêu đề này chiếm */
+    
+    /* Chìa khóa để căn giữa mọi thứ */
+    display: flex;
+    justify-content: center; /* Căn giữa theo chiều ngang */
+    align-items: center;     /* Căn giữa theo chiều dọc */
+}
+
+.thucdon-header .nuoc-lau {
+    color: #FC0000;
+    font-family: Inter;
+    font-size: 36px;
+    font-weight: 900;
+    line-height: 130%;
+    margin: 0; /* Quan trọng: Xóa margin mặc định của h2 để nó không bị lệch */
+}
+
