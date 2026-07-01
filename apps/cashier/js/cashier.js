@@ -327,7 +327,6 @@ async function initThanhToan() {
                         const sdt = phoneInput.value.trim();
                         const infoDiv = document.getElementById('customerInfo');
                         const redeemBox = document.getElementById('redeemBox');
-                        const newCustomerBox = document.getElementById('newCustomerBox');
                         
                         if (sdt.length >= 9) {
                             try {
@@ -339,21 +338,18 @@ async function initThanhToan() {
                                     infoDiv.style.color = '#27AE60';
                                     infoDiv.style.display = 'block';
                                     redeemBox.style.display = 'block';
-                                    newCustomerBox.style.display = 'none';
                                 } else {
                                     window.currentCustomerPoints = 0;
-                                    infoDiv.innerText = `Khách hàng mới`;
+                                    infoDiv.innerText = `Khách hàng mới (Sẽ được tạo tự động khi thanh toán)`;
                                     infoDiv.style.color = '#F39C12';
                                     infoDiv.style.display = 'block';
                                     redeemBox.style.display = 'none';
-                                    newCustomerBox.style.display = 'block';
                                 }
                             } catch(e) {}
                         } else {
                             window.currentCustomerPoints = 0;
                             infoDiv.style.display = 'none';
                             redeemBox.style.display = 'none';
-                            newCustomerBox.style.display = 'none';
                         }
                         calculateChange();
                     }, 500);
@@ -416,26 +412,6 @@ function calculateChange() {
     }
 }
 
-async function registerCustomer() {
-    const sdt = document.getElementById('customerPhone').value.trim();
-    const ten = document.getElementById('customerName').value.trim();
-    if (sdt.length < 9) { alert("SĐT không hợp lệ!"); return; }
-    if (!ten) { alert("Vui lòng nhập tên khách hàng!"); return; }
-    
-    try {
-        const res = await fetch(`${API_BASE}/khachhang`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ soDienThoai: sdt, tenKhachHang: ten })
-        });
-        if (res.ok) {
-            alert("Đăng ký thành công!");
-            document.getElementById('customerPhone').dispatchEvent(new Event('input'));
-        } else {
-            alert("Đăng ký thất bại!");
-        }
-    } catch(e) { alert("Lỗi hệ thống"); }
-}
 
 async function xacNhanThanhToan() {
     try {

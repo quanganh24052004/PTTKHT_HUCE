@@ -23,10 +23,10 @@ public class OrderController {
     public static class CheckoutRequest {
         public String sdt;
         public String phuongThucThanhToan;
-        public double tienKhachDua;
-        public double tienThua;
-        public double tongTienThanhToan;
-        public int diemSuDung;
+        public Double tienKhachDua;
+        public Double tienThua;
+        public Double tongTienThanhToan;
+        public Integer diemSuDung;
     }
 
     @GetMapping
@@ -107,26 +107,35 @@ public class OrderController {
         if (request.sdt != null && !request.sdt.trim().isEmpty()) {
             hoaDon.setSoDienThoai(request.sdt);
             // Deduct used points and reward points: 5% of tongTienThanhToan
-            khachHangRepository.findById(request.sdt).ifPresent(kh -> {
-                int currentPoints = kh.getDiemTichLuy();
-                if (request.diemSuDung > 0 && currentPoints >= request.diemSuDung) {
-                    currentPoints -= request.diemSuDung;
-                }
-                currentPoints += (int)(request.tongTienThanhToan * 0.05);
-                kh.setDiemTichLuy(currentPoints);
-                khachHangRepository.save(kh);
+            KhachHang kh = khachHangRepository.findById(request.sdt).orElseGet(() -> {
+                KhachHang newKh = new KhachHang();
+                newKh.setSoDienThoai(request.sdt);
+                newKh.setTenKhachHang("Khách hàng mới");
+                newKh.setDiemTichLuy(0);
+                return newKh;
             });
+            int currentPoints = kh.getDiemTichLuy();
+            int diemSuDung = request.diemSuDung != null ? request.diemSuDung : 0;
+            double tongTien = request.tongTienThanhToan != null ? request.tongTienThanhToan : 0.0;
+            
+            if (diemSuDung > 0 && currentPoints >= diemSuDung) {
+                currentPoints -= diemSuDung;
+            }
+            currentPoints += (int)(tongTien * 0.05);
+            kh.setDiemTichLuy(currentPoints);
+            khachHangRepository.save(kh);
         }
         
         hoaDon.setPhuongThucThanhToan(
             "cash".equalsIgnoreCase(request.phuongThucThanhToan) ? PhuongThucThanhToan.TienMat : PhuongThucThanhToan.ChuyenKhoanQR
         );
-        hoaDon.setTienKhachDua(request.tienKhachDua);
-        hoaDon.setTienThua(request.tienThua);
-        hoaDon.setTongTienThanhToan(request.tongTienThanhToan);
+        hoaDon.setTienKhachDua(request.tienKhachDua != null ? request.tienKhachDua : 0.0);
+        hoaDon.setTienThua(request.tienThua != null ? request.tienThua : 0.0);
+        hoaDon.setTongTienThanhToan(request.tongTienThanhToan != null ? request.tongTienThanhToan : 0.0);
         
-        hoaDon.setDiemDaSuDung(request.diemSuDung);
-        hoaDon.setSoTienDaGiam(request.diemSuDung * 1000);
+        int diemDaSuDung = request.diemSuDung != null ? request.diemSuDung : 0;
+        hoaDon.setDiemDaSuDung(diemDaSuDung);
+        hoaDon.setSoTienDaGiam(diemDaSuDung * 1000.0);
         hoaDonRepository.save(hoaDon);
         
         // Notify Tablet to reset
