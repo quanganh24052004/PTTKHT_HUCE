@@ -69,9 +69,8 @@
     </div>
 
     <!-- Logout Modal -->
-    <div id="logoutModal" class="modal-overlay-dangXuat" style="display: none;">
-        <div class="modal-content-dangXuat">
-            <span class="close" onclick="closeLogoutModal()" style="position: absolute; right: 20px; top: 15px; font-size: 24px; cursor: pointer;">&times;</span>
+    <div id="logoutModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content" style="max-width: 400px; text-align: center; position: relative;">
             <h3 style="font-size: 20px;">Xác nhận</h3>
             <p style="font-size: 16px;">Bạn có đồng ý đăng xuất không?</p>
             <div style="display: flex; gap: 15px; justify-content: center;">
@@ -86,24 +85,24 @@
         function closeLogoutModal() { document.getElementById('logoutModal').style.display = 'none'; }
         function confirmLogout() {
             localStorage.removeItem('nhanVienInfo');
-            window.location.href = '../dangNhap.html';
+            window.location.href = '../login.html';
         }
         
         window.onload = () => { 
             let nvInfo = localStorage.getItem('nhanVienInfo');
             if (!nvInfo) {
-                window.location.href = '../dangNhap.html';
+                window.location.href = '../login.html';
                 return;
             }
             try {
                 let info = JSON.parse(nvInfo);
                 if (info.vaiTro !== 'ThuNgan') {
-                    window.location.href = '../dangNhap.html';
+                    window.location.href = '../login.html';
                     return;
                 }
                 document.getElementById('sidebarUserName').innerText = info.tenDangNhap || 'Nhân viên';
             } catch(e) {
-                window.location.href = '../dangNhap.html';
+                window.location.href = '../login.html';
                 return;
             }
             khoiTaoSoDoBan(); 

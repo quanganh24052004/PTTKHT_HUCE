@@ -426,13 +426,16 @@ async function updateOrderStatus(itemId, newStatus) {
     
     const ticket = kdsOrders.find(o => o.id === itemId);
     if(ticket && ketNoiSocket) {
+        const nvInfoStr = localStorage.getItem('nhanVienInfo');
+        const branchId = nvInfoStr ? JSON.parse(nvInfoStr).idChiNhanh : null;
         // Gửi cho Tablet
         ketNoiSocket.send("/app/donhang.trangthai", {}, JSON.stringify({ 
             idMonAnKDS: ticket.idMonAn, 
-            statusKDS: newStatus
+            statusKDS: newStatus,
+            idChiNhanh: branchId
         }));
         // Báo cho các bếp khác reload
-        ketNoiSocket.send("/app/donhang.moi", {}, JSON.stringify({ event: 'RELOAD_ORDERS' }));
+        ketNoiSocket.send("/app/donhang.moi", {}, JSON.stringify({ event: 'RELOAD_ORDERS', idChiNhanh: branchId }));
     }
     
     await fetchPendingOrders();

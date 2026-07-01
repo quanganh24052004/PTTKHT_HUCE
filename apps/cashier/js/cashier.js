@@ -479,5 +479,5 @@ async function xacNhanThanhToan() {
 }
 
 function dangXuat() {
-    window.location.href = '../dangNhap.html';
+    window.location.href = '../login.html';
 }
