@@ -410,6 +410,20 @@ async function confirmOrder() {
     
     const itemsToOrder = selectedIndices.map(i => gioHang[i]);
     
+    // Kiểm tra trạng thái mới nhất từ danhSachMonAn
+    let outOfStockItems = [];
+    for (let item of itemsToOrder) {
+        const currentItem = danhSachMonAn.find(i => i.idMonAn === item.idMonAn);
+        if (!currentItem || currentItem.trangThai === 'HetHang') {
+            outOfStockItems.push(item.tenMonAn);
+        }
+    }
+    
+    if (outOfStockItems.length > 0) {
+        alert("Rất xin lỗi quý khách, các món sau vừa hết hàng: " + outOfStockItems.join(', ') + ". Vui lòng bỏ chọn khỏi giỏ hàng hoặc chọn món khác!");
+        return;
+    }
+    
     try {
         const API_BASE = 'http://localhost:8080/api';
         let orderId = null;
