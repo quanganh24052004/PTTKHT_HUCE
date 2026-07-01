@@ -336,19 +336,19 @@ function showCart() {
     container.innerHTML = gioHang.map((i, index) => {
         total += i.gia * i.soLuong;
         return `
-        <div class="gioHang-item">
-            <input type="checkbox" class="gioHang-checkbox" checked onchange="updateCartTotal()">
+        <div class="cart-item">
+            <input type="checkbox" class="cart-checkbox" checked onchange="updateCartTotal()">
             <img src="../web/${i.hinhAnh}" onerror="this.onerror=null; this.src='https://via.placeholder.com/80'">
-            <div class="gioHang-item-info">
+            <div class="cart-item-info">
                 <h4>${i.tenMonAn}</h4>
             </div>
-            <div class="gioHang-item-price">${(i.gia * i.soLuong).toLocaleString('vi-VN')} đ</div>
-            <div class="gioHang-controls">
+            <div class="cart-item-price">${(i.gia * i.soLuong).toLocaleString('vi-VN')} đ</div>
+            <div class="cart-controls">
                 <button onclick="updateQuantity(${index}, -1)">-</button>
                 <span>${i.soLuong}</span>
                 <button onclick="updateQuantity(${index}, 1)">+</button>
             </div>
-            <button class="gioHang-delete" onclick="removeFromCart(${index})">🗑️</button>
+            <button class="cart-delete" onclick="removeFromCart(${index})">🗑️</button>
         </div>
     `}).join('');
     document.getElementById('cartTotal').innerText = total.toLocaleString('vi-VN') + ' đ';
@@ -359,14 +359,14 @@ function showCart() {
 
 function toggleSelectAllCart() {
     const isChecked = document.getElementById('selectAllCart').checked;
-    document.querySelectorAll('.gioHang-checkbox').forEach(cb => cb.checked = isChecked);
+    document.querySelectorAll('.cart-checkbox').forEach(cb => cb.checked = isChecked);
     updateCartTotal();
 }
 
 function updateCartTotal() {
     let total = 0;
-    document.querySelectorAll('.gioHang-item').forEach((row, index) => {
-        const checkbox = row.querySelector('.gioHang-checkbox');
+    document.querySelectorAll('.cart-item').forEach((row, index) => {
+        const checkbox = row.querySelector('.cart-checkbox');
         if(checkbox && checkbox.checked) {
             total += gioHang[index].gia * gioHang[index].soLuong;
         }
@@ -396,8 +396,8 @@ async function confirmOrder() {
     }
     
     const selectedIndices = [];
-    document.querySelectorAll('.gioHang-item').forEach((row, index) => {
-        const checkbox = row.querySelector('.gioHang-checkbox');
+    document.querySelectorAll('.cart-item').forEach((row, index) => {
+        const checkbox = row.querySelector('.cart-checkbox');
         if(checkbox && checkbox.checked) {
             selectedIndices.push(index);
         }
@@ -507,9 +507,9 @@ function showOrders() {
             let badgeText = i.trangThaiMon === 'TiepNhan' ? 'Đã tiếp nhận' : (i.trangThaiMon === 'DangNau' ? 'Đang nấu' : (i.trangThaiMon === 'DaHuy' ? 'Đã hủy' : 'Đã xong'));
             let strikeStyle = i.trangThaiMon === 'DaHuy' ? 'text-decoration: line-through; opacity: 0.6;' : '';
             return `
-            <div class="gioHang-item" style="${strikeStyle}">
+            <div class="cart-item" style="${strikeStyle}">
                 <img src="../web/${i.hinhAnh}" onerror="this.onerror=null; this.src='https://via.placeholder.com/80'">
-                <div class="gioHang-item-info">
+                <div class="cart-item-info">
                     <h4>${i.tenMonAn}</h4>
                 </div>
                 <div class="status-badge ${badgeClass}">${badgeText}</div>
@@ -551,14 +551,14 @@ function showInvoice() {
         let sessionHtml = groups[session].map((i, index) => {
             subtotal += i.gia * i.sl;
             return `
-            <div class="gioHang-item">
+            <div class="cart-item">
                 <img src="../web/${i.hinhAnh}" onerror="this.onerror=null; this.src='https://via.placeholder.com/80'">
-                <div class="gioHang-item-info">
+                <div class="cart-item-info">
                     <h4>${i.tenMonAn}</h4>
                 </div>
-                <div class="gioHang-item-price">${i.gia.toLocaleString('vi-VN')} đ</div>
+                <div class="cart-item-price">${i.gia.toLocaleString('vi-VN')} đ</div>
                 <div style="font-weight: bold; width: 60px;">SL: ${i.sl}</div>
-                <div class="gioHang-item-price" style="color:#E63946;">Tổng: ${(i.gia * i.sl).toLocaleString('vi-VN')} đ</div>
+                <div class="cart-item-price" style="color:#E63946;">Tổng: ${(i.gia * i.sl).toLocaleString('vi-VN')} đ</div>
             </div>
         `}).join('');
         
