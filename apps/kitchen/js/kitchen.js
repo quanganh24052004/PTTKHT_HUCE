@@ -167,7 +167,11 @@ async function toggleItemStatus(id, isChecked) {
     } catch(e) { console.error("Lỗi update trạng thái:", e); }
     
     if(ketNoiSocket) {
-        ketNoiSocket.send("/app/thucdon.capnhat", {}, JSON.stringify({ idMonAn: id, trangThai: newStatus }));
+        ketNoiSocket.send("/app/thucdon.capnhat", {}, JSON.stringify({ 
+            idMonAn: id, 
+            trangThai: newStatus,
+            idChiNhanh: localStorage.getItem('kitchenBranchId')
+        }));
     }
 }
 

@@ -70,9 +70,13 @@ public class WebSocketController {
     }
 
     @MessageMapping("/thucdon.capnhat")
-    @SendTo("/topic/maytinhbang")
-    public String capNhatThucDon(String message) {
-        return message;
+    public void capNhatThucDon(String message) {
+        String idChiNhanh = extractJsonString(message, "idChiNhanh");
+        if (idChiNhanh != null && !idChiNhanh.isEmpty()) {
+            messagingTemplate.convertAndSend("/topic/maytinhbang/" + idChiNhanh, message);
+        } else {
+            messagingTemplate.convertAndSend("/topic/maytinhbang", message);
+        }
     }
 
     @MessageMapping("/ban.sukien")
