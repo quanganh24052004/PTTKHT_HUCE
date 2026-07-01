@@ -87,12 +87,16 @@
     </div>
 
     <!-- Logout Modal -->
-    <div id="logoutModal" class="modal-overlay" style="display: none;">
-        <div class="modal-content" style="max-width: 400px; text-align: center; position: relative;">
-            <h3 style="font-size: 20px;">Xác nhận</h3>
-            <p style="font-size: 16px;">Bạn có đồng ý đăng xuất không?</p>
+    <div id="logoutModal" class="modal-overlay" style="display: none; z-index: 9999;">
+        <div class="modal-content" style="width: 350px; text-align: center; border-radius: 20px; padding: 40px 30px; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+            <div style="width: 65px; height: 65px; background: #FFF5F0; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px auto;">
+                <span style="font-size: 30px;">🚪</span>
+            </div>
+            <h3 style="margin-bottom: 15px; font-size: 22px; color: #2C3E50; font-weight: 700;">Đăng xuất</h3>
+            <p style="margin-bottom: 30px; color: #7F8C8D; font-size: 15px; line-height: 1.5;">Bạn có chắc chắn muốn đăng xuất khỏi hệ thống không?</p>
             <div style="display: flex; gap: 15px; justify-content: center;">
-                <button class="btn btn-orange" style="padding: 10px 40px; border-radius: 25px; font-size: 16px;" onclick="confirmLogout()">Đồng ý</button>
+                <button class="btn btn-gray" style="flex: 1; padding: 12px 0; border-radius: 25px; font-size: 15px; font-weight: 600;" onclick="closeLogoutModal()">Hủy bỏ</button>
+                <button class="btn btn-red" style="flex: 1; padding: 12px 0; border-radius: 25px; font-size: 15px; font-weight: 600;" onclick="confirmLogout()">Đăng xuất</button>
             </div>
         </div>
     </div>

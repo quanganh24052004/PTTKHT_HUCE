@@ -56,13 +56,16 @@
     </div>
 
     <!-- Logout Modal -->
-    <div id="logoutModal" class="modal" style="display: none;">
-        <div class="modal-content" style="max-width: 400px; text-align: center; border-radius: 15px; position: relative;">
-            <span class="close" onclick="closeLogoutModal()" style="position: absolute; right: 20px; top: 15px; font-size: 24px; cursor: pointer;">&times;</span>
-            <h3 style="margin-bottom: 20px; font-size: 20px; color: #333;">Xác nhận</h3>
-            <p style="margin-bottom: 30px; color: #555; font-size: 16px;">Bạn có đồng ý đăng xuất không?</p>
+    <div id="logoutModal" class="modal" style="display: none; z-index: 9999;">
+        <div class="modal-content" style="width: 350px; text-align: center; border-radius: 20px; padding: 40px 30px; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
+            <div style="width: 65px; height: 65px; background: #FFF5F0; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px auto;">
+                <span style="font-size: 30px;">🚪</span>
+            </div>
+            <h3 style="margin-bottom: 15px; font-size: 22px; color: #2C3E50; font-weight: 700;">Đăng xuất</h3>
+            <p style="margin-bottom: 30px; color: #7F8C8D; font-size: 15px; line-height: 1.5;">Bạn có chắc chắn muốn đăng xuất khỏi hệ thống không?</p>
             <div style="display: flex; gap: 15px; justify-content: center;">
-                <button class="btn-orange" style="padding: 10px 40px; border-radius: 25px; font-size: 16px;" onclick="confirmLogout()">Đồng ý</button>
+                <button style="flex: 1; padding: 12px 0; border: none; border-radius: 25px; font-size: 15px; font-weight: 600; cursor: pointer; background: #ECF0F1; color: #34495E; transition: 0.2s;" onclick="closeLogoutModal()" onmouseover="this.style.background='#DFE6E9'" onmouseout="this.style.background='#ECF0F1'">Hủy bỏ</button>
+                <button style="flex: 1; padding: 12px 0; border: none; border-radius: 25px; font-size: 15px; font-weight: 600; cursor: pointer; background: #E63946; color: white; transition: 0.2s;" onclick="confirmLogout()" onmouseover="this.style.background='#D32F2F'" onmouseout="this.style.background='#E63946'">Đăng xuất</button>
             </div>
         </div>
     </div>
