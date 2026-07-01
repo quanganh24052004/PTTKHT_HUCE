@@ -1,7 +1,7 @@
 const API_BASE = 'http://localhost:8080/api';
 let allCategories = [];
-let allItems = [];
-let cart = [];
+let danhSachMonAn = [];
+let gioHang = [];
 let orders = [];
 let currentCat = null;
 let isLocked = false;
@@ -27,15 +27,15 @@ window.onload = async () => {
         
         // Fetch table and branch info
         try {
-            const resTables = await fetch(`${API_BASE}/tables`);
+            const resTables = await fetch(`${API_BASE}/danhSachBan`);
             const allTables = await resTables.json();
-            const currentTable = allTables.find(t => t.idBan === currentTableId);
-            if(currentTable) {
-                const resBranches = await fetch(`${API_BASE}/branches`);
+            const banHienTai = allTables.find(t => t.idBan === currentTableId);
+            if(banHienTai) {
+                const resBranches = await fetch(`${API_BASE}/chinhanh`);
                 const allBranches = await resBranches.json();
-                const branch = allBranches.find(b => b.idChiNhanh === currentTable.idChiNhanh);
+                const branch = allBranches.find(b => b.idChiNhanh === banHienTai.idChiNhanh);
                 if(branch) {
-                    document.querySelector('.table-info').innerText = `Bàn số ${currentTable.soBan} - ${branch.tenChiNhanh}`;
+                    document.querySelector('.table-info').innerText = `Bàn số ${banHienTai.soBan} - ${branch.tenChiNhanh}`;
                 }
             }
         } catch(e) {}
@@ -43,7 +43,7 @@ window.onload = async () => {
         await fetchExistingOrders();
         
         setupSearch();
-        connectWebSocket();
+        ketNoiWebSocket();
     } catch (e) {
         console.error("Lỗi khi tải dữ liệu:", e);
     }
@@ -51,16 +51,16 @@ window.onload = async () => {
 
 async function fetchExistingOrders() {
     try {
-        const resOrders = await fetch(API_BASE + '/orders');
-        const allOrders = await resOrders.json();
-        const openOrder = allOrders.find(o => o.idBan === currentTableId && o.trangThaiOrder === 'DangMo');
+        const resOrders = await fetch(API_BASE + '/donhang');
+        const danhSachDonHang = await resOrders.json();
+        const openOrder = danhSachDonHang.find(o => o.idBan === currentTableId && o.trangThaiOrder === 'DangMo');
         
         if (openOrder) {
-            const resItems = await fetch(`${API_BASE}/orders/${openOrder.idOrder}/items`);
+            const resItems = await fetch(`${API_BASE}/donhang/${openOrder.idOrder}/items`);
             const items = await resItems.json();
             
             orders = items.map(item => {
-                const menuItem = allItems.find(i => i.idMonAn === item.idMonAn) || { tenMonAn: 'Món ăn', hinhAnh: 'https://via.placeholder.com/80', gia: item.donGia };
+                const menuItem = danhSachMonAn.find(i => i.idMonAn === item.idMonAn) || { tenMonAn: 'Món ăn', hinhAnh: 'https://via.placeholder.com/80', gia: item.donGia };
                 return {
                     ...menuItem,
                     sl: item.soLuong,
@@ -86,7 +86,7 @@ function setupSearch() {
             return;
         }
         let dailyIds = getDailyMenuIds();
-        const results = allItems.filter(i => dailyIds.includes(i.idMonAn) && normalizeVN(i.tenMonAn).includes(val));
+        const results = danhSachMonAn.filter(i => dailyIds.includes(i.idMonAn) && normalizeVN(i.tenMonAn).includes(val));
         
         if(results.length === 0) {
             dropdown.innerHTML = '<div style="padding: 15px; color: #666; text-align: center;">Không tìm thấy món ăn</div>';
@@ -115,7 +115,7 @@ function setupSearch() {
 }
 
 async function fetchCategories() {
-    const res = await fetch(`${API_BASE}/menu/categories`);
+    const res = await fetch(`${API_BASE}/thucdon/danhmuc`);
     allCategories = await res.json();
 }
 
@@ -126,17 +126,17 @@ function getDailyMenuIds() {
 
 async function loadDailyMenu() {
     try {
-        const res = await fetch(`${API_BASE}/menu/daily`);
+        const res = await fetch(`${API_BASE}/thucdon/hangngay`);
         dailyMenuIds = await res.json();
     } catch(e) {}
 }
 
 async function fetchItems() {
-    const res = await fetch(`${API_BASE}/menu/items`);
+    const res = await fetch(`${API_BASE}/thucdon/monan`);
     const items = await res.json();
     
     // Khách hàng chỉ được thấy những món nằm trong Thực đơn hôm nay (do bếp chọn), bất kể còn hay hết
-    allItems = items.filter(i => dailyMenuIds.includes(i.idMonAn));
+    danhSachMonAn = items.filter(i => dailyMenuIds.includes(i.idMonAn));
 }
 
 function renderCategories() {
@@ -202,7 +202,7 @@ function filterItems(catId, subId = 'ALL') {
         allowedCats = [subId];
     }
     
-    const filtered = allItems.filter(i => allowedCats.includes(i.idDanhMuc));
+    const filtered = danhSachMonAn.filter(i => allowedCats.includes(i.idDanhMuc));
     const container = document.getElementById('itemsGrid');
     
     if(filtered.length === 0) {
@@ -228,7 +228,7 @@ let currentItemDetails = null;
 let currentItemQty = 1;
 
 function showItemDetails(id) {
-    const item = allItems.find(i => i.idMonAn === id);
+    const item = danhSachMonAn.find(i => i.idMonAn === id);
     if(item.trangThai === 'HetHang') {
         alert('Món này đã hết hàng!');
         return;
@@ -254,7 +254,7 @@ function showItemDetails(id) {
                     <span id="itemDetailsQty">${currentItemQty}</span>
                     <button onclick="updateItemDetailsQty(1)">+</button>
                 </div>
-                <button class="btn-add-cart" onclick="confirmAddItem()">Thêm</button>
+                <button class="btn-add-gioHang" onclick="confirmAddItem()">Thêm</button>
             </div>
         </div>
     `;
@@ -278,11 +278,11 @@ function confirmAddItem() {
         return;
     }
     if(!currentItemDetails) return;
-    const existing = cart.find(c => c.idMonAn === currentItemDetails.idMonAn);
+    const existing = gioHang.find(c => c.idMonAn === currentItemDetails.idMonAn);
     if(existing) {
         existing.soLuong += currentItemQty;
     } else {
-        cart.push({...currentItemDetails, soLuong: currentItemQty});
+        gioHang.push({...currentItemDetails, soLuong: currentItemQty});
     }
     updateCartBadge();
     closeModals();
@@ -297,50 +297,50 @@ function showToast(message) {
     setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 3000);
 }
 
-function addToCart(id) {
+function themVaoGioHang(id) {
     if(isLocked) {
         alert("Bàn đã được chốt thanh toán, quý khách không thể gọi thêm món lúc này.");
         return;
     }
-    const item = allItems.find(i => i.idMonAn === id);
+    const item = danhSachMonAn.find(i => i.idMonAn === id);
     if(item.trangThai === 'HetHang') {
         alert('Món này đã hết hàng!');
         return;
     }
-    const existing = cart.find(c => c.idMonAn === id);
+    const existing = gioHang.find(c => c.idMonAn === id);
     if(existing) {
         existing.soLuong++;
     } else {
-        cart.push({...item, soLuong: 1});
+        gioHang.push({...item, soLuong: 1});
     }
     updateCartBadge();
 }
 
 function updateCartBadge() {
-    const total = cart.reduce((sum, i) => sum + i.soLuong, 0);
+    const total = gioHang.reduce((sum, i) => sum + i.soLuong, 0);
     document.getElementById('cartBadge').innerText = total;
 }
 
 // Modals
 function showCart() {
-    const container = document.getElementById('cartItems');
+    const container = document.getElementById('cacMonTrongGio');
     let total = 0;
-    container.innerHTML = cart.map((i, index) => {
+    container.innerHTML = gioHang.map((i, index) => {
         total += i.gia * i.soLuong;
         return `
-        <div class="cart-item">
-            <input type="checkbox" class="cart-checkbox" checked onchange="updateCartTotal()">
+        <div class="gioHang-item">
+            <input type="checkbox" class="gioHang-checkbox" checked onchange="updateCartTotal()">
             <img src="../web/${i.hinhAnh}" onerror="this.onerror=null; this.src='https://via.placeholder.com/80'">
-            <div class="cart-item-info">
+            <div class="gioHang-item-info">
                 <h4>${i.tenMonAn}</h4>
             </div>
-            <div class="cart-item-price">${(i.gia * i.soLuong).toLocaleString('vi-VN')} đ</div>
-            <div class="cart-controls">
+            <div class="gioHang-item-price">${(i.gia * i.soLuong).toLocaleString('vi-VN')} đ</div>
+            <div class="gioHang-controls">
                 <button onclick="updateQuantity(${index}, -1)">-</button>
                 <span>${i.soLuong}</span>
                 <button onclick="updateQuantity(${index}, 1)">+</button>
             </div>
-            <button class="cart-delete" onclick="removeFromCart(${index})">🗑️</button>
+            <button class="gioHang-delete" onclick="removeFromCart(${index})">🗑️</button>
         </div>
     `}).join('');
     document.getElementById('cartTotal').innerText = total.toLocaleString('vi-VN') + ' đ';
@@ -351,30 +351,30 @@ function showCart() {
 
 function toggleSelectAllCart() {
     const isChecked = document.getElementById('selectAllCart').checked;
-    document.querySelectorAll('.cart-checkbox').forEach(cb => cb.checked = isChecked);
+    document.querySelectorAll('.gioHang-checkbox').forEach(cb => cb.checked = isChecked);
     updateCartTotal();
 }
 
 function updateCartTotal() {
     let total = 0;
-    document.querySelectorAll('.cart-item').forEach((row, index) => {
-        const checkbox = row.querySelector('.cart-checkbox');
+    document.querySelectorAll('.gioHang-item').forEach((row, index) => {
+        const checkbox = row.querySelector('.gioHang-checkbox');
         if(checkbox && checkbox.checked) {
-            total += cart[index].gia * cart[index].soLuong;
+            total += gioHang[index].gia * gioHang[index].soLuong;
         }
     });
     document.getElementById('cartTotal').innerText = total.toLocaleString('vi-VN') + ' đ';
 }
 
 function updateQuantity(index, delta) {
-    cart[index].soLuong += delta;
-    if(cart[index].soLuong <= 0) cart.splice(index, 1);
+    gioHang[index].soLuong += delta;
+    if(gioHang[index].soLuong <= 0) gioHang.splice(index, 1);
     updateCartBadge();
     showCart();
 }
 
 function removeFromCart(index) {
-    cart.splice(index, 1);
+    gioHang.splice(index, 1);
     updateCartBadge();
     showCart();
 }
@@ -382,14 +382,14 @@ function removeFromCart(index) {
 let orderSessionCounter = 1;
 
 async function confirmOrder() {
-    if(cart.length === 0) {
+    if(gioHang.length === 0) {
         alert('Giỏ hàng trống!');
         return;
     }
     
     const selectedIndices = [];
-    document.querySelectorAll('.cart-item').forEach((row, index) => {
-        const checkbox = row.querySelector('.cart-checkbox');
+    document.querySelectorAll('.gioHang-item').forEach((row, index) => {
+        const checkbox = row.querySelector('.gioHang-checkbox');
         if(checkbox && checkbox.checked) {
             selectedIndices.push(index);
         }
@@ -400,16 +400,16 @@ async function confirmOrder() {
         return;
     }
     
-    const itemsToOrder = selectedIndices.map(i => cart[i]);
+    const itemsToOrder = selectedIndices.map(i => gioHang[i]);
     
     try {
         const API_BASE = 'http://localhost:8080/api';
         let orderId = null;
         
         // Fetch current open order
-        const resOrders = await fetch(API_BASE + '/orders');
-        const allOrders = await resOrders.json();
-        const openOrder = allOrders.find(o => o.idBan === currentTableId && o.trangThaiOrder === 'DangMo');
+        const resOrders = await fetch(API_BASE + '/donhang');
+        const danhSachDonHang = await resOrders.json();
+        const openOrder = danhSachDonHang.find(o => o.idBan === currentTableId && o.trangThaiOrder === 'DangMo');
         
         if(openOrder) {
             orderId = openOrder.idOrder;
@@ -421,7 +421,7 @@ async function confirmOrder() {
                 tongTienTamTinh: 0,
                 trangThaiOrder: 'DangMo'
             };
-            const resCreate = await fetch(API_BASE + '/orders', {
+            const resCreate = await fetch(API_BASE + '/donhang', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(newOrder)
@@ -440,7 +440,7 @@ async function confirmOrder() {
                 donGia: item.gia,
                 trangThaiMon: 'DaTiepNhan'
             };
-            await fetch(`${API_BASE}/orders/${orderId}/items`, {
+            await fetch(`${API_BASE}/donhang/${orderId}/items`, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(chiTiet)
@@ -456,15 +456,15 @@ async function confirmOrder() {
         }
         
         // Notify Kitchen
-        if(stompClient) {
-            stompClient.send("/app/order.new", {}, JSON.stringify({ 
+        if(ketNoiSocket) {
+            ketNoiSocket.send("/app/donhang.moi", {}, JSON.stringify({ 
                 table: "Bàn " + currentTableId, 
                 items: itemsToOrder.map(i => ({ name: i.tenMonAn, qty: i.soLuong })) 
             }));
         }
         
         showToast('Đã gửi order xuống bếp!');
-        cart = cart.filter((_, idx) => !selectedIndices.includes(idx));
+        gioHang = gioHang.filter((_, idx) => !selectedIndices.includes(idx));
         updateCartBadge();
         closeModals();
         showOrders();
@@ -498,9 +498,9 @@ function showOrders() {
             let badgeText = i.trangThaiMon === 'TiepNhan' ? 'Đã tiếp nhận' : (i.trangThaiMon === 'DangNau' ? 'Đang nấu' : (i.trangThaiMon === 'DaHuy' ? 'Đã hủy' : 'Đã xong'));
             let strikeStyle = i.trangThaiMon === 'DaHuy' ? 'text-decoration: line-through; opacity: 0.6;' : '';
             return `
-            <div class="cart-item" style="${strikeStyle}">
+            <div class="gioHang-item" style="${strikeStyle}">
                 <img src="../web/${i.hinhAnh}" onerror="this.onerror=null; this.src='https://via.placeholder.com/80'">
-                <div class="cart-item-info">
+                <div class="gioHang-item-info">
                     <h4>${i.tenMonAn}</h4>
                 </div>
                 <div class="status-badge ${badgeClass}">${badgeText}</div>
@@ -542,14 +542,14 @@ function showInvoice() {
         let sessionHtml = groups[session].map((i, index) => {
             subtotal += i.gia * i.sl;
             return `
-            <div class="cart-item">
+            <div class="gioHang-item">
                 <img src="../web/${i.hinhAnh}" onerror="this.onerror=null; this.src='https://via.placeholder.com/80'">
-                <div class="cart-item-info">
+                <div class="gioHang-item-info">
                     <h4>${i.tenMonAn}</h4>
                 </div>
-                <div class="cart-item-price">${i.gia.toLocaleString('vi-VN')} đ</div>
+                <div class="gioHang-item-price">${i.gia.toLocaleString('vi-VN')} đ</div>
                 <div style="font-weight: bold; width: 60px;">SL: ${i.sl}</div>
-                <div class="cart-item-price" style="color:#E63946;">Tổng: ${(i.gia * i.sl).toLocaleString('vi-VN')} đ</div>
+                <div class="gioHang-item-price" style="color:#E63946;">Tổng: ${(i.gia * i.sl).toLocaleString('vi-VN')} đ</div>
             </div>
         `}).join('');
         
@@ -584,16 +584,16 @@ function closeModals() {
 }
 
 // WebSocket setup
-let stompClient = null;
-function connectWebSocket() {
+let ketNoiSocket = null;
+function ketNoiWebSocket() {
     const socket = new SockJS('http://localhost:8080/ws');
-    stompClient = Stomp.over(socket);
-    stompClient.connect({}, function (frame) {
+    ketNoiSocket = Stomp.over(socket);
+    ketNoiSocket.connect({}, function (frame) {
         console.log('Connected: ' + frame);
-        stompClient.subscribe('/topic/tablet', function (message) {
+        ketNoiSocket.subscribe('/topic/maytinhbang', function (message) {
             const data = JSON.parse(message.body);
             if(data.idMonAn && data.trangThai) {
-                const item = allItems.find(i => i.idMonAn === data.idMonAn);
+                const item = danhSachMonAn.find(i => i.idMonAn === data.idMonAn);
                 if(item) {
                     item.trangThai = data.trangThai;
                     if(typeof currentCat !== 'undefined' && currentCat) filterItems(currentCat);

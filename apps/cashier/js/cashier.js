@@ -1,12 +1,12 @@
 const API_BASE = 'http://localhost:8080/api';
-let tables = [];
-let allItems = [];
-let currentTable = null;
-let stompClient = null;
-let currentStatusFilter = 'ALL';
+let danhSachBan = [];
+let danhSachMonAn = [];
+let banHienTai = null;
+let ketNoiSocket = null;
+let boLocTrangThai = 'ALL';
 
-function filterByStatus(status) {
-    currentStatusFilter = status;
+function locTheoTrangThai(status) {
+    boLocTrangThai = status;
     ['ALL', 'Trong', 'DangPhucVu', 'ChoThanhToan'].forEach(s => {
         const btn = document.getElementById('btnFilter' + s);
         if(btn) {
@@ -19,39 +19,39 @@ function filterByStatus(status) {
             }
         }
     });
-    filterTables();
+    locBan();
 }
 
-function connectWebSocket() {
+function ketNoiWebSocket() {
     const socket = new SockJS('http://localhost:8080/ws');
-    stompClient = Stomp.over(socket);
-    stompClient.connect({}, function (frame) {
+    ketNoiSocket = Stomp.over(socket);
+    ketNoiSocket.connect({}, function (frame) {
         console.log('Cashier Connected to STOMP');
-        stompClient.subscribe('/topic/tablet', function (message) {
-            console.log("Tablet event, refresh tables");
-            renderTablesFromDB();
+        ketNoiSocket.subscribe('/topic/maytinhbang', function (message) {
+            console.log("Tablet event, refresh danhSachBan");
+            hienThiBanTuDatabase();
         });
-        stompClient.subscribe('/topic/kitchen', function (message) {
-            console.log("Kitchen event, refresh tables");
-            renderTablesFromDB();
+        ketNoiSocket.subscribe('/topic/bep', function (message) {
+            console.log("Kitchen event, refresh danhSachBan");
+            hienThiBanTuDatabase();
         });
     });
 }
 
 // --- Sơ đồ bàn ---
-async function initSodoBan() {
-    connectWebSocket();
+async function khoiTaoSoDoBan() {
+    ketNoiWebSocket();
     try {
-        const res = await fetch(`${API_BASE}/menu/items`);
-        allItems = await res.json();
+        const res = await fetch(`${API_BASE}/thucdon/monan`);
+        danhSachMonAn = await res.json();
     } catch(e) {}
-    await renderTablesFromDB();
-    updateCashierHeader();
+    await hienThiBanTuDatabase();
+    capNhatTieuDeThuNgan();
 }
 
-async function renderTablesFromDB() {
+async function hienThiBanTuDatabase() {
     try {
-        const res = await fetch(`${API_BASE}/tables`, { headers: { 'Cache-Control': 'no-cache' } });
+        const res = await fetch(`${API_BASE}/danhSachBan`, { headers: { 'Cache-Control': 'no-cache' } });
         let allTables = await res.json();
         
         let nvInfoStr = localStorage.getItem('nhanVienInfo');
@@ -61,19 +61,19 @@ async function renderTablesFromDB() {
             branchId = nvInfo.idChiNhanh;
             
             if(branchId) {
-                tables = allTables.filter(t => t.idChiNhanh === branchId);
+                danhSachBan = allTables.filter(t => t.idChiNhanh === branchId);
             } else {
-                tables = allTables;
+                danhSachBan = allTables;
             }
         } else {
-            tables = allTables;
+            danhSachBan = allTables;
         }
 
-        filterTables();
+        locBan();
     } catch(e) { console.error("Lỗi tải bàn:", e); }
 }
 
-async function updateCashierHeader() {
+async function capNhatTieuDeThuNgan() {
     let nvInfoStr = localStorage.getItem('nhanVienInfo');
     if(nvInfoStr) {
         let nvInfo = JSON.parse(nvInfoStr);
@@ -85,7 +85,7 @@ async function updateCashierHeader() {
 
         if(branchId) {
             try {
-                const resBranches = await fetch(`${API_BASE}/branches`);
+                const resBranches = await fetch(`${API_BASE}/chinhanh`);
                 const branches = await resBranches.json();
                 const currentBranch = branches.find(b => b.idChiNhanh === branchId);
                 if(currentBranch) {
@@ -106,16 +106,16 @@ async function updateCashierHeader() {
     }
 }
 
-function filterTables() {
+function locBan() {
     const grid = document.getElementById('tableGrid');
     if(!grid) return;
     const searchInput = document.getElementById('tableSearchInput');
     let query = searchInput ? searchInput.value.trim().toLowerCase() : '';
     
-    let filteredTables = tables;
+    let filteredTables = danhSachBan;
 
-    if(currentStatusFilter !== 'ALL') {
-        filteredTables = filteredTables.filter(t => t.trangThai === currentStatusFilter);
+    if(boLocTrangThai !== 'ALL') {
+        filteredTables = filteredTables.filter(t => t.trangThai === boLocTrangThai);
     }
     
     if(query) {
@@ -126,7 +126,7 @@ function filterTables() {
         let statusClass = t.trangThai === 'Trong' ? 'status-trong' : (t.trangThai === 'DangPhucVu' ? 'status-dang-phuc-vu' : 'status-cho-thanh-toan');
         let statusText = t.trangThai === 'Trong' ? 'Trống' : (t.trangThai === 'DangPhucVu' ? 'Đang phục vụ' : 'Chờ thanh toán');
         return `
-        <div class="table-card ${statusClass}" onclick="openTableDetails('${t.idBan}', '${t.soBan}', '${t.trangThai}')">
+        <div class="table-card ${statusClass}" onclick="moChiTietBan('${t.idBan}', '${t.soBan}', '${t.trangThai}')">
             <div class="table-number">${t.soBan}</div>
             <div class="table-status ${statusClass}">${statusText}</div>
         </div>
@@ -134,8 +134,8 @@ function filterTables() {
     }).join('');
 }
 
-async function openTableDetails(idBan, soBan, status) {
-    currentTable = { idBan, soBan, status, orders: [] };
+async function moChiTietBan(idBan, soBan, status) {
+    banHienTai = { idBan, soBan, status, orders: [] };
     const modal = document.getElementById('tableModal');
     const title = document.getElementById('modalTitle');
     const body = document.getElementById('modalBody');
@@ -151,12 +151,12 @@ async function openTableDetails(idBan, soBan, status) {
         modal.style.display = 'flex';
         
         try {
-            const res = await fetch(`${API_BASE}/orders`, { headers: { 'Cache-Control': 'no-cache' } });
-            const allOrders = await res.json();
-            const openOrder = allOrders.find(o => o.idBan === idBan && o.trangThaiOrder === 'DangMo');
+            const res = await fetch(`${API_BASE}/donhang`, { headers: { 'Cache-Control': 'no-cache' } });
+            const danhSachDonHang = await res.json();
+            const openOrder = danhSachDonHang.find(o => o.idBan === idBan && o.trangThaiOrder === 'DangMo');
             
             if(openOrder) {
-                const resItems = await fetch(API_BASE + '/orders/' + openOrder.idOrder + '/items');
+                const resItems = await fetch(API_BASE + '/donhang/' + openOrder.idOrder + '/items');
                 const items = await resItems.json();
                 
                 items.sort((a,b) => new Date(a.thoiGianGoi) - new Date(b.thoiGianGoi));
@@ -180,7 +180,7 @@ async function openTableDetails(idBan, soBan, status) {
                     let groupHtml = `<div style="font-weight: bold; color: #FF6B00; margin-top: 10px; margin-bottom: 5px; border-bottom: 1px dashed #ccc; padding-bottom: 3px;">Order ${index + 1} - ${g.time.toLocaleTimeString('vi-VN', {hour:'2-digit', minute:'2-digit'})}</div>`;
                     let itemsHtml = g.items.map(o => {
                         let itemName = o.idMonAn;
-                        let def = allItems.find(x => x.idMonAn === o.idMonAn);
+                        let def = danhSachMonAn.find(x => x.idMonAn === o.idMonAn);
                         if(def) itemName = def.tenMonAn;
                         
                         if(o.trangThaiMon === 'DaHuy') {
@@ -232,9 +232,9 @@ async function openTableDetails(idBan, soBan, status) {
 
 async function chotBan(idBan, soBan) {
     try {
-        await fetch(`${API_BASE}/tables/${idBan}/status?status=ChoThanhToan`, { method: 'PUT' });
-        if(stompClient) {
-            stompClient.send("/app/table.event", {}, JSON.stringify({ event: "LOCK_TABLE" }));
+        await fetch(`${API_BASE}/danhSachBan/${idBan}/status?status=ChoThanhToan`, { method: 'PUT' });
+        if(ketNoiSocket) {
+            ketNoiSocket.send("/app/ban.sukien", {}, JSON.stringify({ event: "LOCK_TABLE" }));
         }
         window.location.href = `thanhtoan.html?table=${idBan}&soBan=${soBan}`;
     } catch(e) { alert("Lỗi chốt bàn"); }
@@ -245,27 +245,27 @@ function closeModal() {
 }
 
 // --- Thanh toán ---
-async function initThanhToan() {
-    connectWebSocket();
+async function khoiTaoThanhToan() {
+    ketNoiWebSocket();
     const urlParams = new URLSearchParams(window.location.search);
     const tableId = urlParams.get('table');
     const soBan = urlParams.get('soBan');
     if(!tableId) { window.location.href = 'sodoban.html'; return; }
     
-    currentTable = { idBan: tableId, soBan };
+    banHienTai = { idBan: tableId, soBan };
     document.getElementById('ttTableTitle').innerText = `Thanh toán Bàn ${soBan}`;
     
     try {
-        const resItemsList = await fetch(`${API_BASE}/menu/items`, { headers: { 'Cache-Control': 'no-cache' } });
-        allItems = await resItemsList.json();
+        const resItemsList = await fetch(`${API_BASE}/thucdon/monan`, { headers: { 'Cache-Control': 'no-cache' } });
+        danhSachMonAn = await resItemsList.json();
         
-        const resOrd = await fetch(API_BASE + '/orders', { headers: { 'Cache-Control': 'no-cache' } });
-        const allOrders = await resOrd.json();
-        const openOrder = allOrders.find(o => o.idBan === tableId && o.trangThaiOrder === 'DangMo');
+        const resOrd = await fetch(API_BASE + '/donhang', { headers: { 'Cache-Control': 'no-cache' } });
+        const danhSachDonHang = await resOrd.json();
+        const openOrder = danhSachDonHang.find(o => o.idBan === tableId && o.trangThaiOrder === 'DangMo');
         
         if(openOrder) {
-            currentTable.openOrderId = openOrder.idOrder;
-            const resItems = await fetch(API_BASE + '/orders/' + openOrder.idOrder + '/items');
+            banHienTai.openOrderId = openOrder.idOrder;
+            const resItems = await fetch(API_BASE + '/donhang/' + openOrder.idOrder + '/items');
             const items = await resItems.json();
             
             items.sort((a,b) => new Date(a.thoiGianGoi) - new Date(b.thoiGianGoi));
@@ -289,7 +289,7 @@ async function initThanhToan() {
                 let groupHtml = `<div style="font-weight: bold; color: #FF6B00; margin-top: 10px; margin-bottom: 5px; border-bottom: 1px dashed #ccc; padding-bottom: 3px;">Order ${index + 1} - ${g.time.toLocaleTimeString('vi-VN', {hour:'2-digit', minute:'2-digit'})}</div>`;
                 let itemsHtml = g.items.map(o => {
                     let itemName = o.idMonAn;
-                    let def = allItems.find(x => x.idMonAn === o.idMonAn);
+                    let def = danhSachMonAn.find(x => x.idMonAn === o.idMonAn);
                     if(def) itemName = def.tenMonAn;
                     
                     if(o.trangThaiMon === 'DaHuy') {
@@ -355,7 +355,7 @@ async function initThanhToan() {
                             redeemBox.style.display = 'none';
                             if(newCustomerBox) newCustomerBox.style.display = 'none';
                         }
-                        calculateChange();
+                        tinhTienThua();
                     }, 500);
                 };
             }
@@ -363,7 +363,7 @@ async function initThanhToan() {
     } catch(e) { console.error(e); }
 }
 
-function selectMethod(method) {
+function chonPhuongThuc(method) {
     document.getElementById('btnCash').classList.remove('active');
     document.getElementById('btnQR').classList.remove('active');
     document.getElementById('qrBox').style.display = 'none';
@@ -378,7 +378,7 @@ function selectMethod(method) {
     }
 }
 
-function calculateChange() {
+function tinhTienThua() {
     const tienKhachDuaStr = document.getElementById('tienKhachDua').value;
     const tienKhachDua = parseFloat(tienKhachDuaStr) || 0;
     
@@ -419,7 +419,7 @@ function calculateChange() {
 
 async function xacNhanThanhToan() {
     try {
-        if(!currentTable.openOrderId) return;
+        if(!banHienTai.openOrderId) return;
         
         const sdt = document.getElementById('customerPhone') ? document.getElementById('customerPhone').value.trim() : '';
         const tenKhachHang = document.getElementById('customerName') ? document.getElementById('customerName').value.trim() : '';
@@ -449,7 +449,7 @@ async function xacNhanThanhToan() {
             diemSuDung: diemSuDung
         };
 
-        const res = await fetch(`${API_BASE}/orders/${currentTable.openOrderId}/checkout`, {
+        const res = await fetch(`${API_BASE}/donhang/${banHienTai.openOrderId}/checkout`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
@@ -466,6 +466,6 @@ async function xacNhanThanhToan() {
     } catch(e) { console.error(e); alert("Lỗi hệ thống"); }
 }
 
-function logout() {
-    window.location.href = '../login.html';
+function dangXuat() {
+    window.location.href = '../dangNhap.html';
 }

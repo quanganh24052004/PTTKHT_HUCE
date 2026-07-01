@@ -109,24 +109,24 @@
         function closeLogoutModal() { document.getElementById('logoutModal').style.display = 'none'; }
         function confirmLogout() {
             localStorage.removeItem('nhanVienInfo');
-            window.location.href = '../login.html';
+            window.location.href = '../dangNhap.html';
         }
         
         window.onload = () => {
             let nvInfo = localStorage.getItem('nhanVienInfo');
             if (!nvInfo) {
-                window.location.href = '../login.html';
+                window.location.href = '../dangNhap.html';
                 return;
             }
             try {
                 let info = JSON.parse(nvInfo);
                 if (info.vaiTro !== 'DauBep') {
-                    window.location.href = '../login.html';
+                    window.location.href = '../dangNhap.html';
                     return;
                 }
                 document.getElementById('sidebarUserName').innerText = info.tenDangNhap || 'Đầu bếp chính';
             } catch(e) {
-                window.location.href = '../login.html';
+                window.location.href = '../dangNhap.html';
                 return;
             }
             initMenuManager();

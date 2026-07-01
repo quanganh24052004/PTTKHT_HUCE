@@ -16,7 +16,7 @@ public class HoaDonController {
     private HoaDonRepository hoaDonRepository;
 
     @GetMapping
-    public List<HoaDon> getAllHoaDon() {
+    public List<HoaDon> layDanhSachHoaDon() {
         return hoaDonRepository.findAll();
     }
 }

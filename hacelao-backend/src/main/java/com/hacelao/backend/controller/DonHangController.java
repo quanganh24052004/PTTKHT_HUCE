@@ -10,9 +10,9 @@ import com.hacelao.backend.entity.enums.*;
 import org.springframework.http.ResponseEntity;
 
 @RestController
-@RequestMapping("/api/orders")
+@RequestMapping("/api/donhang")
 @CrossOrigin(origins = "*")
-public class OrderController {
+public class DonHangController {
     @Autowired private OrderRepository orderRepository;
     @Autowired private ChiTietOrderRepository chiTietOrderRepository;
     @Autowired private BanRepository banRepository;
@@ -31,12 +31,12 @@ public class OrderController {
     }
 
     @GetMapping
-    public List<OrderEntity> getOrders() {
+    public List<OrderEntity> layDanhSachDonHang() {
         return orderRepository.findAll();
     }
 
     @PostMapping
-    public OrderEntity createOrder(@RequestBody OrderEntity order) {
+    public OrderEntity taoDonHang(@RequestBody OrderEntity order) {
         OrderEntity saved = orderRepository.save(order);
         banRepository.findById(order.getIdBan()).ifPresent(ban -> {
             ban.setTrangThai(TrangThaiBan.DangPhucVu);
@@ -46,19 +46,19 @@ public class OrderController {
     }
     
     @GetMapping("/{idOrder}/items")
-    public List<ChiTietOrder> getOrderItems(@PathVariable String idOrder) {
+    public List<ChiTietOrder> layChiTietDonHang(@PathVariable String idOrder) {
         return chiTietOrderRepository.findAll().stream().filter(i -> i.getIdOrder().equals(idOrder)).toList();
     }
     
     @PostMapping("/{idOrder}/items")
-    public ChiTietOrder addItemToOrder(@PathVariable String idOrder, @RequestBody ChiTietOrder item) {
+    public ChiTietOrder themMonVaoDonHang(@PathVariable String idOrder, @RequestBody ChiTietOrder item) {
         item.setIdOrder(idOrder);
         item.setThoiGianGoi(LocalDateTime.now(ZoneId.of("Asia/Ho_Chi_Minh")));
         return chiTietOrderRepository.save(item);
     }
     
     @PutMapping("/items/{itemId}/status")
-    public ChiTietOrder updateItemStatus(@PathVariable Long itemId, @RequestParam TrangThaiChiTietOrder status) {
+    public ChiTietOrder capNhatTrangThaiMon(@PathVariable Long itemId, @RequestParam TrangThaiChiTietOrder status) {
         ChiTietOrder item = chiTietOrderRepository.findById(itemId).orElseThrow();
         item.setTrangThaiMon(status);
         if(status == TrangThaiChiTietOrder.DaXong) {
@@ -73,14 +73,14 @@ public class OrderController {
     }
     
     @PutMapping("/{idOrder}/status")
-    public OrderEntity updateOrderStatus(@PathVariable String idOrder, @RequestParam TrangThaiOrder status) {
+    public OrderEntity capNhatTrangThaiDonHang(@PathVariable String idOrder, @RequestParam TrangThaiOrder status) {
         OrderEntity order = orderRepository.findById(idOrder).orElseThrow();
         order.setTrangThaiOrder(status);
         return orderRepository.save(order);
     }
 
     @PostMapping("/{idOrder}/checkout")
-    public ResponseEntity<?> checkoutOrder(@PathVariable String idOrder, @RequestBody CheckoutRequest request) {
+    public ResponseEntity<?> thanhToanDonHang(@PathVariable String idOrder, @RequestBody CheckoutRequest request) {
         OrderEntity order = orderRepository.findById(idOrder).orElseThrow();
         
         // Update Order

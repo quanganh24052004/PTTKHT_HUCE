@@ -1,7 +1,7 @@
 const API_BASE = 'http://localhost:8080/api';
-let allItems = [];
+let danhSachMonAn = [];
 let kdsOrders = []; 
-let stompClient = null;
+let ketNoiSocket = null;
 
 function normalizeVN(str) {
     if(!str) return '';
@@ -21,28 +21,28 @@ function getDailyMenuIds() {
 async function setDailyMenuIds(ids) {
     dailyMenuIds = ids;
     try {
-        await fetch(`${API_BASE}/menu/daily`, {
+        await fetch(`${API_BASE}/thucdon/hangngay`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(ids)
         });
-        if(stompClient) {
-            stompClient.send("/app/menu.update", {}, JSON.stringify({ action: 'dailyMenuUpdate' }));
+        if(ketNoiSocket) {
+            ketNoiSocket.send("/app/thucdon.capnhat", {}, JSON.stringify({ action: 'dailyMenuUpdate' }));
         }
     } catch(e) { console.error("Lỗi lưu thực đơn ngày:", e); }
 }
 
 async function loadDailyMenu() {
     try {
-        const res = await fetch(`${API_BASE}/menu/daily`);
+        const res = await fetch(`${API_BASE}/thucdon/hangngay`);
         dailyMenuIds = await res.json();
     } catch(e) {}
 }
 
 async function fetchItems() {
     try {
-        const res = await fetch(`${API_BASE}/menu/items`);
-        allItems = await res.json();
+        const res = await fetch(`${API_BASE}/thucdon/monan`);
+        danhSachMonAn = await res.json();
     } catch(e) { console.error("Lỗi fetch items:", e); }
 }
 
@@ -57,7 +57,7 @@ async function initMenuManager() {
     });
     
     renderMenuManager();
-    connectWebSocket();
+    ketNoiWebSocket();
     updateKitchenHeader();
 }
 
@@ -73,7 +73,7 @@ async function updateKitchenHeader() {
 
         if(branchId) {
             try {
-                const res = await fetch(`${API_BASE}/branches`);
+                const res = await fetch(`${API_BASE}/chinhanh`);
                 const branches = await res.json();
                 const branch = branches.find(b => b.idChiNhanh === branchId);
                 if(branch) {
@@ -105,7 +105,7 @@ function renderMenuManager() {
     if(!grid) return;
     
     let dailyIds = getDailyMenuIds();
-    let itemsToShow = allItems.filter(i => dailyIds.includes(i.idMonAn));
+    let itemsToShow = danhSachMonAn.filter(i => dailyIds.includes(i.idMonAn));
     
     if (currentMainFilter !== 'ALL') {
         itemsToShow = itemsToShow.filter(i => i.idDanhMuc === currentMainFilter || i.idDanhMuc.startsWith(currentMainFilter));
@@ -147,17 +147,17 @@ function renderMenuManager() {
 async function toggleItemStatus(id, isChecked) {
     const newStatus = isChecked ? 'ConHang' : 'HetHang';
     // Update local immediately for UI
-    let item = allItems.find(i => i.idMonAn === id);
+    let item = danhSachMonAn.find(i => i.idMonAn === id);
     if(item) item.trangThai = newStatus;
     
     renderMenuManager(); // Refresh badge
     
     try {
-        await fetch(`${API_BASE}/menu/items/${id}/status?status=${newStatus}`, { method: 'PUT' });
+        await fetch(`${API_BASE}/thucdon/monan/${id}/status?status=${newStatus}`, { method: 'PUT' });
     } catch(e) { console.error("Lỗi update trạng thái:", e); }
     
-    if(stompClient) {
-        stompClient.send("/app/menu.update", {}, JSON.stringify({ idMonAn: id, trangThai: newStatus }));
+    if(ketNoiSocket) {
+        ketNoiSocket.send("/app/thucdon.capnhat", {}, JSON.stringify({ idMonAn: id, trangThai: newStatus }));
     }
 }
 
@@ -184,7 +184,7 @@ function filterModal(cat) {
 function renderDailyMenuModal() {
     const list = document.getElementById('modalItemsList');
     
-    let itemsToShow = allItems;
+    let itemsToShow = danhSachMonAn;
     if (currentModalFilter !== 'ALL') {
         itemsToShow = itemsToShow.filter(i => i.idDanhMuc === currentModalFilter || i.idDanhMuc.startsWith(currentModalFilter));
     }
@@ -219,7 +219,7 @@ async function toggleDailyMenu(id, isChecked) {
     if (isChecked) {
         if (!dailyIds.includes(id)) dailyIds.push(id);
         
-        let item = allItems.find(i => i.idMonAn === id);
+        let item = danhSachMonAn.find(i => i.idMonAn === id);
         if(item && item.trangThai === 'HetHang') {
             await toggleItemStatus(id, true);
         }
@@ -231,7 +231,7 @@ async function toggleDailyMenu(id, isChecked) {
 }
 
 async function toggleAllDailyMenuItems(isChecked) {
-    let itemsToShow = allItems;
+    let itemsToShow = danhSachMonAn;
     if (currentModalFilter !== 'ALL') {
         itemsToShow = itemsToShow.filter(i => i.idDanhMuc === currentModalFilter || i.idDanhMuc.startsWith(currentModalFilter));
     }
@@ -256,7 +256,7 @@ async function toggleAllDailyMenuItems(isChecked) {
 // --- KDS (XỬ LÝ ĐƠN HÀNG) ---
 async function initKDS() {
     await fetchItems();
-    connectWebSocket();
+    ketNoiWebSocket();
     fetchPendingOrders();
     updateKitchenHeader();
 }
@@ -272,7 +272,7 @@ function filterKds(status) {
 
 async function fetchPendingOrders() {
     try {
-        const resTables = await fetch(`${API_BASE}/tables`, { cache: 'no-store' });
+        const resTables = await fetch(`${API_BASE}/danhSachBan`, { cache: 'no-store' });
         const allTables = await resTables.json();
         const tableBranchMap = {};
         allTables.forEach(t => tableBranchMap[t.idBan] = t.idChiNhanh);
@@ -280,24 +280,24 @@ async function fetchPendingOrders() {
         let nvInfoStr = localStorage.getItem('nhanVienInfo');
         let myBranchId = nvInfoStr ? JSON.parse(nvInfoStr).idChiNhanh : null;
 
-        const resOrd = await fetch(API_BASE + '/orders', { cache: 'no-store' });
-        let allOrders = await resOrd.json();
+        const resOrd = await fetch(API_BASE + '/donhang', { cache: 'no-store' });
+        let danhSachDonHang = await resOrd.json();
 
         if (myBranchId) {
-            allOrders = allOrders.filter(o => tableBranchMap[o.idBan] === myBranchId);
+            danhSachDonHang = danhSachDonHang.filter(o => tableBranchMap[o.idBan] === myBranchId);
         }
         
         let tempOrders = [];
         
-        for(let o of allOrders) {
+        for(let o of danhSachDonHang) {
             if(o.trangThaiOrder === 'DangMo') {
-                const resItems = await fetch(API_BASE + '/orders/' + o.idOrder + '/items', { cache: 'no-store' });
+                const resItems = await fetch(API_BASE + '/donhang/' + o.idOrder + '/items', { cache: 'no-store' });
                 const items = await resItems.json();
                 
                 for(let i of items) {
                     // Only show DaTiepNhan, DangNau, DaXong
                     if(['DaTiepNhan', 'DangNau', 'DaXong'].includes(i.trangThaiMon)) {
-                        let itemDef = allItems.find(x => x.idMonAn === i.idMonAn);
+                        let itemDef = danhSachMonAn.find(x => x.idMonAn === i.idMonAn);
                         let localTimeStr = "12:00";
                         if (i.thoiGianGoi) {
                             let d = new Date(i.thoiGianGoi);
@@ -412,28 +412,28 @@ function createKDSRow(order) {
 }
 
 async function updateOrderStatus(itemId, newStatus) {
-    await fetch(API_BASE + `/orders/items/${itemId}/status?status=${newStatus}`, { method: 'PUT' });
+    await fetch(API_BASE + `/donhang/items/${itemId}/status?status=${newStatus}`, { method: 'PUT' });
     
     const ticket = kdsOrders.find(o => o.id === itemId);
-    if(ticket && stompClient) {
+    if(ticket && ketNoiSocket) {
         // Gửi cho Tablet
-        stompClient.send("/app/order.status", {}, JSON.stringify({ 
+        ketNoiSocket.send("/app/donhang.trangthai", {}, JSON.stringify({ 
             idMonAnKDS: ticket.idMonAn, 
             statusKDS: newStatus
         }));
         // Báo cho các bếp khác reload
-        stompClient.send("/app/order.new", {}, JSON.stringify({ event: 'RELOAD_ORDERS' }));
+        ketNoiSocket.send("/app/donhang.moi", {}, JSON.stringify({ event: 'RELOAD_ORDERS' }));
     }
     
     await fetchPendingOrders();
 }
 
-function connectWebSocket() {
+function ketNoiWebSocket() {
     const socket = new SockJS('http://localhost:8080/ws');
-    stompClient = Stomp.over(socket);
-    stompClient.connect({}, function (frame) {
+    ketNoiSocket = Stomp.over(socket);
+    ketNoiSocket.connect({}, function (frame) {
         console.log('Connected: ' + frame);
-        stompClient.subscribe('/topic/kitchen', function (message) {
+        ketNoiSocket.subscribe('/topic/bep', function (message) {
             console.log("Refresh from tablet");
             fetchPendingOrders();
         });

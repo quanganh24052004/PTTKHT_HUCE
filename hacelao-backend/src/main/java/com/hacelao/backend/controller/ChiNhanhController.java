@@ -6,13 +6,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/branches")
+@RequestMapping("/api/chinhanh")
 @CrossOrigin(origins = "*")
 public class ChiNhanhController {
     @Autowired private ChiNhanhRepository chiNhanhRepository;
 
     @GetMapping
-    public List<ChiNhanh> getAll() {
+    public List<ChiNhanh> layDanhSachChiNhanh() {
         return chiNhanhRepository.findAll();
     }
 }

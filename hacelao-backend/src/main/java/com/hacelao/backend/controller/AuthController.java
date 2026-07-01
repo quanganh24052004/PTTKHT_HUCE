@@ -11,8 +11,8 @@ import org.springframework.http.ResponseEntity;
 public class AuthController {
     @Autowired private NhanVienRepository nhanVienRepository;
 
-    @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody NhanVien loginRequest) {
+    @PostMapping("/dangnhap")
+    public ResponseEntity<?> dangNhap(@RequestBody NhanVien loginRequest) {
         if (loginRequest.getTenDangNhap() == null || loginRequest.getMatKhau() == null) {
             return ResponseEntity.status(401).build();
         }

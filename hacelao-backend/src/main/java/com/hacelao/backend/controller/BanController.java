@@ -7,18 +7,18 @@ import java.util.List;
 import com.hacelao.backend.entity.enums.TrangThaiBan;
 
 @RestController
-@RequestMapping("/api/tables")
+@RequestMapping("/api/ban")
 @CrossOrigin(origins = "*")
-public class TableController {
+public class BanController {
     @Autowired private BanRepository banRepository;
 
     @GetMapping
-    public List<Ban> getTables() {
+    public List<Ban> layDanhSachBan() {
         return banRepository.findAll();
     }
     
     @PutMapping("/{id}/status")
-    public Ban updateTableStatus(@PathVariable String id, @RequestParam TrangThaiBan status) {
+    public Ban capNhatTrangThaiBan(@PathVariable String id, @RequestParam TrangThaiBan status) {
         Ban ban = banRepository.findById(id).orElseThrow();
         ban.setTrangThai(status);
         return banRepository.save(ban);

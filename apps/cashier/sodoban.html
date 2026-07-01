@@ -35,15 +35,15 @@
             <header class="header">
                 <h2>Sơ đồ bàn</h2>
                 <div style="position: relative;">
-                    <input type="text" id="tableSearchInput" placeholder="Tìm kiếm số bàn..." style="padding: 10px 40px; border-radius: 20px; border: 1px solid #ccc; width: 250px; outline: none;" oninput="filterTables()">
+                    <input type="text" id="tableSearchInput" placeholder="Tìm kiếm số bàn..." style="padding: 10px 40px; border-radius: 20px; border: 1px solid #ccc; width: 250px; outline: none;" oninput="locBan()">
                     <span style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #888;">🔍</span>
                 </div>
             </header>
             <div class="filters" style="padding: 15px 30px; display: flex; gap: 10px; border-bottom: 1px solid #E0E0E0; background: white;">
-                <button class="btn btn-orange active" id="btnFilterALL" onclick="filterByStatus('ALL')">Tất cả</button>
-                <button class="btn btn-gray" id="btnFilterTrong" onclick="filterByStatus('Trong')">Bàn trống</button>
-                <button class="btn btn-gray" id="btnFilterDangPhucVu" onclick="filterByStatus('DangPhucVu')">Đang phục vụ</button>
-                <button class="btn btn-gray" id="btnFilterChoThanhToan" onclick="filterByStatus('ChoThanhToan')">Chờ thanh toán</button>
+                <button class="btn btn-orange active" id="btnFilterALL" onclick="locTheoTrangThai('ALL')">Tất cả</button>
+                <button class="btn btn-gray" id="btnFilterTrong" onclick="locTheoTrangThai('Trong')">Bàn trống</button>
+                <button class="btn btn-gray" id="btnFilterDangPhucVu" onclick="locTheoTrangThai('DangPhucVu')">Đang phục vụ</button>
+                <button class="btn btn-gray" id="btnFilterChoThanhToan" onclick="locTheoTrangThai('ChoThanhToan')">Chờ thanh toán</button>
             </div>
             
             <div class="table-grid" id="tableGrid">
@@ -69,8 +69,8 @@
     </div>
 
     <!-- Logout Modal -->
-    <div id="logoutModal" class="modal-overlay-logout" style="display: none;">
-        <div class="modal-content-logout">
+    <div id="logoutModal" class="modal-overlay-dangXuat" style="display: none;">
+        <div class="modal-content-dangXuat">
             <span class="close" onclick="closeLogoutModal()" style="position: absolute; right: 20px; top: 15px; font-size: 24px; cursor: pointer;">&times;</span>
             <h3 style="font-size: 20px;">Xác nhận</h3>
             <p style="font-size: 16px;">Bạn có đồng ý đăng xuất không?</p>
@@ -86,27 +86,27 @@
         function closeLogoutModal() { document.getElementById('logoutModal').style.display = 'none'; }
         function confirmLogout() {
             localStorage.removeItem('nhanVienInfo');
-            window.location.href = '../login.html';
+            window.location.href = '../dangNhap.html';
         }
         
         window.onload = () => { 
             let nvInfo = localStorage.getItem('nhanVienInfo');
             if (!nvInfo) {
-                window.location.href = '../login.html';
+                window.location.href = '../dangNhap.html';
                 return;
             }
             try {
                 let info = JSON.parse(nvInfo);
                 if (info.vaiTro !== 'ThuNgan') {
-                    window.location.href = '../login.html';
+                    window.location.href = '../dangNhap.html';
                     return;
                 }
                 document.getElementById('sidebarUserName').innerText = info.tenDangNhap || 'Nhân viên';
             } catch(e) {
-                window.location.href = '../login.html';
+                window.location.href = '../dangNhap.html';
                 return;
             }
-            initSodoBan(); 
+            khoiTaoSoDoBan(); 
         };
     </script>
 </body>

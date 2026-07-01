@@ -53,8 +53,8 @@
         </main>
     </div>
     <!-- Logout Modal -->
-    <div id="logoutModal" class="modal-overlay-logout" style="display: none;">
-        <div class="modal-content-logout">
+    <div id="logoutModal" class="modal-overlay-dangXuat" style="display: none;">
+        <div class="modal-content-dangXuat">
             <span class="close" onclick="closeLogoutModal()" style="position: absolute; right: 20px; top: 15px; font-size: 24px; cursor: pointer;">&times;</span>
             <h3 style="font-size: 20px;">Xác nhận</h3>
             <p style="font-size: 16px;">Bạn có đồng ý đăng xuất không?</p>
@@ -70,25 +70,25 @@
         function closeLogoutModal() { document.getElementById('logoutModal').style.display = 'none'; }
         function confirmLogout() {
             localStorage.removeItem('nhanVienInfo');
-            window.location.href = '../login.html';
+            window.location.href = '../dangNhap.html';
         }
         
         window.onload = () => { 
             let nvInfo = localStorage.getItem('nhanVienInfo');
             if (!nvInfo) {
-                window.location.href = '../login.html';
+                window.location.href = '../dangNhap.html';
                 return;
             }
             try {
                 let info = JSON.parse(nvInfo);
                 if (info.vaiTro !== 'ThuNgan') {
-                    window.location.href = '../login.html';
+                    window.location.href = '../dangNhap.html';
                     return;
                 }
-                updateCashierHeader();
+                capNhatTieuDeThuNgan();
                 fetchInvoices();
             } catch(e) {
-                window.location.href = '../login.html';
+                window.location.href = '../dangNhap.html';
                 return;
             }
         };

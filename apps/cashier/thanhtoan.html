@@ -56,7 +56,7 @@
                     <!-- Khách hàng cũ -->
                     <div id="customerInfo" style="margin-top: 10px; font-weight: bold; color: #27AE60; display: none;"></div>
                     <div id="redeemBox" style="margin-top: 10px; display: none;">
-                        <input type="number" id="diemSuDung" class="input-box" placeholder="Nhập số điểm muốn đổi (1đ = 1000đ)" oninput="calculateChange()">
+                        <input type="number" id="diemSuDung" class="input-box" placeholder="Nhập số điểm muốn đổi (1đ = 1000đ)" oninput="tinhTienThua()">
                     </div>
 
                     <!-- Khách hàng mới -->
@@ -66,12 +66,12 @@
                     
                     <h3 style="margin-top:20px; margin-bottom:15px; color:#34495E;">Phương thức</h3>
                     <div class="payment-methods">
-                        <button class="method-btn active" id="btnCash" onclick="selectMethod('cash')">Tiền mặt</button>
-                        <button class="method-btn" id="btnQR" onclick="selectMethod('qr')">Quét mã QR</button>
+                        <button class="method-btn active" id="btnCash" onclick="chonPhuongThuc('cash')">Tiền mặt</button>
+                        <button class="method-btn" id="btnQR" onclick="chonPhuongThuc('qr')">Quét mã QR</button>
                     </div>
                     
                     <div id="cashBox" style="margin-top: 15px;">
-                        <input type="number" id="tienKhachDua" class="input-box" placeholder="Nhập số tiền khách đưa..." oninput="calculateChange()">
+                        <input type="number" id="tienKhachDua" class="input-box" placeholder="Nhập số tiền khách đưa..." oninput="tinhTienThua()">
                         <div id="tienThuaDisplay" style="margin-top: 10px; font-size: 16px; font-weight: bold; color: #E74C3C;">Tiền thừa: 0 đ</div>
                     </div>
 
@@ -87,8 +87,8 @@
     </div>
 
     <!-- Logout Modal -->
-    <div id="logoutModal" class="modal-overlay-logout" style="display: none;">
-        <div class="modal-content-logout">
+    <div id="logoutModal" class="modal-overlay-dangXuat" style="display: none;">
+        <div class="modal-content-dangXuat">
             <span class="close" onclick="closeLogoutModal()" style="position: absolute; right: 20px; top: 15px; font-size: 24px; cursor: pointer;">&times;</span>
             <h3 style="font-size: 20px;">Xác nhận</h3>
             <p style="font-size: 16px;">Bạn có đồng ý đăng xuất không?</p>
@@ -104,30 +104,30 @@
         function closeLogoutModal() { document.getElementById('logoutModal').style.display = 'none'; }
         function confirmLogout() {
             localStorage.removeItem('nhanVienInfo');
-            window.location.href = '../login.html';
+            window.location.href = '../dangNhap.html';
         }
         
         window.onload = () => { 
             let nvInfo = localStorage.getItem('nhanVienInfo');
             if (!nvInfo) {
-                alert("nvInfo is null, redirecting to login");
-                window.location.href = '../login.html';
+                alert("nvInfo is null, redirecting to dangNhap");
+                window.location.href = '../dangNhap.html';
                 return;
             }
             try {
                 let info = JSON.parse(nvInfo);
                 if (info.vaiTro !== 'ThuNgan') {
-                    alert("vaiTro is not ThuNgan (it is " + info.vaiTro + "), redirecting to login");
-                    window.location.href = '../login.html';
+                    alert("vaiTro is not ThuNgan (it is " + info.vaiTro + "), redirecting to dangNhap");
+                    window.location.href = '../dangNhap.html';
                     return;
                 }
                 document.getElementById('sidebarUserName').innerText = info.tenDangNhap || 'Nhân viên';
             } catch(e) {
                 alert("JSON parse error: " + e.message);
-                window.location.href = '../login.html';
+                window.location.href = '../dangNhap.html';
                 return;
             }
-            initThanhToan(); 
+            khoiTaoThanhToan(); 
         };
     </script>
 </body>

@@ -15,14 +15,14 @@ public class KhachHangController {
     private final KhachHangRepository khachHangRepository;
 
     @GetMapping("/{sdt}")
-    public ResponseEntity<KhachHang> getKhachHang(@PathVariable String sdt) {
+    public ResponseEntity<KhachHang> layThongTinKhachHang(@PathVariable String sdt) {
         return khachHangRepository.findById(sdt)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public ResponseEntity<KhachHang> createKhachHang(@RequestBody KhachHang khachHang) {
+    public ResponseEntity<KhachHang> taoKhachHang(@RequestBody KhachHang khachHang) {
         if (khachHang.getSoDienThoai() == null || khachHang.getSoDienThoai().trim().isEmpty()) {
             return ResponseEntity.badRequest().build();
         }
