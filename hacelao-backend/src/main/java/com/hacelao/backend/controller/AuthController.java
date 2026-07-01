@@ -16,9 +16,13 @@ public class AuthController {
         if (loginRequest.getTenDangNhap() == null || loginRequest.getMatKhau() == null) {
             return ResponseEntity.status(401).build();
         }
+        String loginId = loginRequest.getTenDangNhap().trim();
+        String password = loginRequest.getMatKhau().trim();
+        
         return nhanVienRepository.findAll().stream()
-                .filter(nv -> nv.getTenDangNhap().trim().equalsIgnoreCase(loginRequest.getTenDangNhap().trim()) 
-                           && nv.getMatKhau().trim().equals(loginRequest.getMatKhau().trim()))
+                .filter(nv -> (nv.getTenDangNhap().trim().equalsIgnoreCase(loginId) 
+                            || nv.getIdNhanVien().trim().equalsIgnoreCase(loginId))
+                           && nv.getMatKhau().trim().equals(password))
                 .findFirst()
                 .map(nv -> ResponseEntity.ok(nv))
                 .orElseGet(() -> ResponseEntity.status(401).build());
