@@ -34,10 +34,6 @@ INSERT IGNORE INTO ban (id_ban, id_chi_nhanh, so_ban, trang_thai) VALUES ('B03_C
 
 
 
-INSERT IGNORE INTO hoa_don (id_hoa_don, id_order, id_nhan_vien_thu_ngan, so_dien_thoai, tong_tien_tam_tinh, tong_tien_thanh_toan, ngay_thanh_toan, diem_da_su_dung, so_tien_da_giam, tien_khach_dua, tien_thua, phuong_thuc_thanh_toan) VALUES ('HD_1780000001', 'OD_1780000001', 'NV_T01', '0901111111', 719000, 519000, '2026-07-01T10:30:00', 200, 200000, 600000, 81000, 'TienMat');
-INSERT IGNORE INTO hoa_don (id_hoa_don, id_order, id_nhan_vien_thu_ngan, so_dien_thoai, tong_tien_tam_tinh, tong_tien_thanh_toan, ngay_thanh_toan, diem_da_su_dung, so_tien_da_giam, tien_khach_dua, tien_thua, phuong_thuc_thanh_toan) VALUES ('HD_1780000002', 'OD_1780000002', 'NV_T01', NULL, 324000, 324000, '2026-07-01T12:15:00', 0, 0, 324000, 0, 'ChuyenKhoanQR');
-INSERT IGNORE INTO hoa_don (id_hoa_don, id_order, id_nhan_vien_thu_ngan, so_dien_thoai, tong_tien_tam_tinh, tong_tien_thanh_toan, ngay_thanh_toan, diem_da_su_dung, so_tien_da_giam, tien_khach_dua, tien_thua, phuong_thuc_thanh_toan) VALUES ('HD_1780000003', 'OD_1780000003', 'NV_T01', '0902222222', 450000, 400000, '2026-07-01T14:45:00', 50, 50000, 500000, 100000, 'TienMat');
-
 INSERT IGNORE INTO danh_muc (id_danh_muc, id_danh_muc_cha, ten_danh_muc) VALUES ('DM_NL', NULL, 'Nước lẩu');
 INSERT IGNORE INTO danh_muc (id_danh_muc, id_danh_muc_cha, ten_danh_muc) VALUES ('DM_MC', NULL, 'Món chính');
 INSERT IGNORE INTO danh_muc (id_danh_muc, id_danh_muc_cha, ten_danh_muc) VALUES ('DM_NC', NULL, 'Nước chấm');
