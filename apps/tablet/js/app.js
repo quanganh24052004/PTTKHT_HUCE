@@ -262,7 +262,7 @@ function showItemDetails(id) {
                     <span id="itemDetailsQty">${currentItemQty}</span>
                     <button onclick="updateItemDetailsQty(1)">+</button>
                 </div>
-                <button class="btn-add-gioHang" onclick="confirmAddItem()">Thêm</button>
+                <button class="btn-add-cart" onclick="confirmAddItem()">Thêm</button>
             </div>
         </div>
     `;
