@@ -51,7 +51,7 @@ async function khoiTaoSoDoBan() {
 
 async function hienThiBanTuDatabase() {
     try {
-        const res = await fetch(`${API_BASE}/danhSachBan`, { headers: { 'Cache-Control': 'no-cache' } });
+        const res = await fetch(`${API_BASE}/ban`, { headers: { 'Cache-Control': 'no-cache' } });
         let allTables = await res.json();
         
         let nvInfoStr = localStorage.getItem('nhanVienInfo');
@@ -232,7 +232,7 @@ async function moChiTietBan(idBan, soBan, status) {
 
 async function chotBan(idBan, soBan) {
     try {
-        await fetch(`${API_BASE}/danhSachBan/${idBan}/status?status=ChoThanhToan`, { method: 'PUT' });
+        await fetch(`${API_BASE}/ban/${idBan}/status?status=ChoThanhToan`, { method: 'PUT' });
         if(ketNoiSocket) {
             ketNoiSocket.send("/app/ban.sukien", {}, JSON.stringify({ event: "LOCK_TABLE" }));
         }

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HaceLao - Thiết Lập Tablet</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: #FAFAFA; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .setup-card {
+            background: white; padding: 40px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            width: 400px; text-align: center;
+        }
+        .logo { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 30px; }
+        .logo img { height: 60px; }
+        .logo-text { font-size: 28px; font-weight: 700; color: #FF6B00; }
+        .form-group { margin-bottom: 20px; text-align: left; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 600; color: #333; }
+        .form-group select {
+            width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #ddd;
+            font-size: 16px; outline: none; transition: 0.3s;
+        }
+        .form-group select:focus { border-color: #FF6B00; }
+        .btn-orange {
+            background: #FF6B00; color: white; border: none; padding: 15px; width: 100%;
+            border-radius: 10px; font-size: 18px; font-weight: 600; cursor: pointer; transition: 0.3s;
+            margin-top: 10px;
+        }
+        .btn-orange:hover { background: #E65A00; }
+        .warning-text { color: #E74C3C; font-size: 14px; margin-top: 15px; display: none; }
+    </style>
+</head>
+<body>
+    <div class="setup-card">
+        <div class="logo">
+            <!-- Tạm thời để alt nếu không load được logo -->
+            <img src="../../hacelao-backend/src/main/resources/static/images/Web Trang chủ/Group 427320743.png" alt="Logo" onerror="this.style.display='none'">
+            <div class="logo-text">HaceLao</div>
+        </div>
+        <h2 style="margin-bottom: 25px; color: #333;">Thiết Lập Bàn</h2>
+        
+        <div class="form-group">
+            <label>Chi nhánh</label>
+            <select id="branchSelect" onchange="loadTables()">
+                <option value="">-- Chọn chi nhánh --</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label>Số bàn</label>
+            <select id="tableSelect">
+                <option value="">-- Vui lòng chọn chi nhánh trước --</option>
+            </select>
+        </div>
+        
+        <button class="btn-orange" onclick="startTablet()">Bắt đầu sử dụng</button>
+        <div class="warning-text" id="warningText">Vui lòng chọn đầy đủ chi nhánh và bàn!</div>
+    </div>
+    
+    <script src="js/setup.js"></script>
+</body>
+</html>

@@ -272,7 +272,7 @@ function filterKds(status) {
 
 async function fetchPendingOrders() {
     try {
-        const resTables = await fetch(`${API_BASE}/danhSachBan`, { cache: 'no-store' });
+        const resTables = await fetch(`${API_BASE}/ban`, { cache: 'no-store' });
         const allTables = await resTables.json();
         const tableBranchMap = {};
         allTables.forEach(t => tableBranchMap[t.idBan] = t.idChiNhanh);
@@ -431,10 +431,14 @@ async function updateOrderStatus(itemId, newStatus) {
 function ketNoiWebSocket() {
     const socket = new SockJS('http://localhost:8080/ws');
     ketNoiSocket = Stomp.over(socket);
+    const nvInfoStr = localStorage.getItem('nhanVienInfo');
+    const branchId = nvInfoStr ? JSON.parse(nvInfoStr).idChiNhanh : null;
     ketNoiSocket.connect({}, function (frame) {
         console.log('Connected: ' + frame);
-        ketNoiSocket.subscribe('/topic/bep', function (message) {
-            console.log("Refresh from tablet");
+        // Subscribe topic theo chi nhánh của đầu bếp
+        const topicBep = branchId ? `/topic/bep/${branchId}` : '/topic/bep';
+        ketNoiSocket.subscribe(topicBep, function (message) {
+            console.log("Nhận đơn hàng mới từ tablet:", message.body);
             fetchPendingOrders();
         });
     });

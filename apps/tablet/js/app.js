@@ -5,7 +5,11 @@ let gioHang = [];
 let orders = [];
 let currentCat = null;
 let isLocked = false;
-let currentTableId = new URLSearchParams(window.location.search).get('table') || 'B01_CN01';
+let currentTableId = localStorage.getItem('tabletTableId');
+
+if (!currentTableId) {
+    window.location.href = 'index.html';
+}
 
 function normalizeVN(str) {
     if(!str) return '';
@@ -27,7 +31,7 @@ window.onload = async () => {
         
         // Fetch table and branch info
         try {
-            const resTables = await fetch(`${API_BASE}/danhSachBan`);
+            const resTables = await fetch(`${API_BASE}/ban`);
             const allTables = await resTables.json();
             const banHienTai = allTables.find(t => t.idBan === currentTableId);
             if(banHienTai) {
@@ -458,7 +462,8 @@ async function confirmOrder() {
         // Notify Kitchen
         if(ketNoiSocket) {
             ketNoiSocket.send("/app/donhang.moi", {}, JSON.stringify({ 
-                table: "Bàn " + currentTableId, 
+                table: "Bàn " + currentTableId,
+                idChiNhanh: localStorage.getItem('tabletBranchId'),
                 items: itemsToOrder.map(i => ({ name: i.tenMonAn, qty: i.soLuong })) 
             }));
         }
@@ -588,9 +593,12 @@ let ketNoiSocket = null;
 function ketNoiWebSocket() {
     const socket = new SockJS('http://localhost:8080/ws');
     ketNoiSocket = Stomp.over(socket);
+    const branchId = localStorage.getItem('tabletBranchId');
     ketNoiSocket.connect({}, function (frame) {
         console.log('Connected: ' + frame);
-        ketNoiSocket.subscribe('/topic/maytinhbang', function (message) {
+        // Subscribe topic theo chi nhánh nếu có, còn không thì topic chung
+        const topicTablet = branchId ? `/topic/maytinhbang/${branchId}` : '/topic/maytinhbang';
+        ketNoiSocket.subscribe(topicTablet, function (message) {
             const data = JSON.parse(message.body);
             if(data.idMonAn && data.trangThai) {
                 const item = danhSachMonAn.find(i => i.idMonAn === data.idMonAn);
@@ -601,7 +609,6 @@ function ketNoiWebSocket() {
             } else if(data.idMonAnKDS && data.statusKDS) {
                 let updated = false;
                 orders.filter(o => o.idMonAn === data.idMonAnKDS).forEach(o => {
-                    // Update only if it's an active status, avoiding reverting DaXong if there are multiple same items.
                     if(o.trangThaiMon !== 'DaXong') {
                         o.trangThaiMon = data.statusKDS;
                         updated = true;
@@ -639,3 +646,4 @@ function ketNoiWebSocket() {
         });
     });
 }
+
