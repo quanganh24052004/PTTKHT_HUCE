@@ -82,39 +82,41 @@ Truy cập: `http://localhost:8001/apps/tablet/datmon.html` (Thường được 
 
 ## 🧪 Tài Khoản Test
 
-> Mật khẩu đăng nhập = Số điện thoại của nhân viên
+> **Mật khẩu** = Số điện thoại của nhân viên  
+> **Tên đăng nhập** có thể nhập có dấu hoặc **không dấu**, không phân biệt hoa thường  
+> Ví dụ: `nguyen van toan` hoặc `Nguyễn Văn Toàn` đều được chấp nhận
 
 ### 🏪 CN01 – HaceLao Nguyễn Chí Thanh (6 bàn: 1–6)
 
-| Tên đăng nhập | Mật khẩu | Vai trò |
-|---|---|---|
-| Nguyễn Văn Toàn | 0901112222 | 👨‍🍳 Đầu bếp |
-| Lê Minh Tuấn | 0903334444 | 👨‍🍳 Đầu bếp |
-| Hoàng Quang Hải | 0905556666 | 👨‍🍳 Đầu bếp |
-| Trần Thu Hà | 0902223333 | 💳 Thu ngân |
-| Phạm Ngọc Ánh | 0904445555 | 💳 Thu ngân |
-| Vũ Thùy Linh | 0906667777 | 💳 Thu ngân |
+| Tên đăng nhập | Không dấu (ví dụ gõ) | Mật khẩu | Vai trò |
+|---|---|---|---|
+| Nguyễn Văn Toàn | `nguyen van toan` | `0901112222` | 👨‍🍳 Đầu bếp |
+| Lê Minh Tuấn | `le minh tuan` | `0903334444` | 👨‍🍳 Đầu bếp |
+| Hoàng Quang Hải | `hoang quang hai` | `0905556666` | 👨‍🍳 Đầu bếp |
+| Trần Thu Hà | `tran thu ha` | `0902223333` | 💳 Thu ngân |
+| Phạm Ngọc Ánh | `pham ngoc anh` | `0904445555` | 💳 Thu ngân |
+| Vũ Thùy Linh | `vu thuy linh` | `0906667777` | 💳 Thu ngân |
 
 ### 🏪 CN02 – HaceLao Vincom Mega Mall Times City (3 bàn: 1–3)
 
-| Tên đăng nhập | Mật khẩu | Vai trò |
-|---|---|---|
-| Đặng Kim Chi | 0907778888 | 👨‍🍳 Đầu bếp |
-| Bùi Ngọc Bảo | 0908889999 | 💳 Thu ngân |
+| Tên đăng nhập | Không dấu (ví dụ gõ) | Mật khẩu | Vai trò |
+|---|---|---|---|
+| Đặng Kim Chi | `dang kim chi` | `0907778888` | 👨‍🍳 Đầu bếp |
+| Bùi Ngọc Bảo | `bui ngoc bao` | `0908889999` | 💳 Thu ngân |
 
-### 🏪 CN03 – HaceLao Lotte Mall Tây Hồ (chưa có bàn trong DB)
+### 🏪 CN03 – HaceLao Lotte Mall Tây Hồ
 
-| Tên đăng nhập | Mật khẩu | Vai trò |
-|---|---|---|
-| Đinh Trọng Tài | 0909990000 | 👨‍🍳 Đầu bếp |
-| Ngô Thu Phương | 0910001111 | 💳 Thu ngân |
+| Tên đăng nhập | Không dấu (ví dụ gõ) | Mật khẩu | Vai trò |
+|---|---|---|---|
+| Đinh Trọng Tài | `dinh trong tai` | `0909990000` | 👨‍🍳 Đầu bếp |
+| Ngô Thu Phương | `ngo thu phuong` | `0910001111` | 💳 Thu ngân |
 
-### 🏪 CN04 – HaceLao Vincom Phạm Ngọc Thạch (chưa có bàn trong DB)
+### 🏪 CN04 – HaceLao Vincom Phạm Ngọc Thạch
 
-| Tên đăng nhập | Mật khẩu | Vai trò |
-|---|---|---|
-| Lương Bích Hữu | 0911112222 | 👨‍🍳 Đầu bếp |
-| Hồ Quang Hiếu | 0912223333 | 💳 Thu ngân |
+| Tên đăng nhập | Không dấu (ví dụ gõ) | Mật khẩu | Vai trò |
+|---|---|---|---|
+| Lương Bích Hữu | `luong bich huu` | `0911112222` | 👨‍🍳 Đầu bếp |
+| Hồ Quang Hiếu | `ho quang hieu` | `0912223333` | 💳 Thu ngân |
 
 ### 👥 Khách hàng có điểm tích lũy (dùng để test thanh toán)
 
