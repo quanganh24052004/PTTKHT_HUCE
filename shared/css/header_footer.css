@@ -53,6 +53,9 @@ ul {
     justify-content: space-between; /* Đẩy 3 phần ra xa nhau (Trái - Giữa - Phải) */
     align-items: center; /* Căn cho tất cả đều nằm giữa theo chiều dọc */
     padding: 0px 20px 0px 20px;
+    max-width: var(--max-width);
+    margin: 0 auto;
+    width: 100%;
 }
 
 /* Ép ảnh logo và chữ HaceLao nằm ngang cạnh nhau */
@@ -287,10 +290,11 @@ ul {
     display: flex;
     justify-content: space-between;
     gap: 60px;
-    max-width: 3000px;
+    max-width: var(--max-width);
     margin: 0 auto;
     padding: 0 80px;
     align-items: center;
+    width: 100%;
 }
 
 .brand-col {

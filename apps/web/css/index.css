@@ -24,6 +24,14 @@ body {
     color: var(--text-dark); /* Dùng thùng sơn màu đen đã pha ở trên */
 }
 
+/* Thêm class container để giới hạn độ rộng nội dung trên màn hình lớn */
+.container {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    width: 100%;
+}
+
+
 /* Xóa gạch chân xấu xí mặc định của các đường link */
 a {
     text-decoration: none;
@@ -49,7 +57,7 @@ ul {
     
     
     width: 100%; 
-    height: 1500px;
+    height: 800px;
     /* LỆNH QUAN TRỌNG: Bất cứ phần ảnh nào tràn ra khỏi cái khung 400px này đều bị giấu đi */
     overflow: hidden;
     
@@ -90,17 +98,17 @@ ul {
 ========================================================== */
 .hero-container {
     position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
     display: flex; 
     z-index: 2;
     flex-direction: column;
     align-items: flex-start;
     gap: 24px; 
-    
-    /* TĂNG THÔNG SỐ NÀY LÊN ĐỂ ĐẨY CHỮ XUỐNG THẤP HƠN */
-    /* Lúc nãy là 24%, giờ ông thử tăng lên 32% hoặc 35% nhé */
-    padding-top: 24%;
-    padding-left: 15%;
-    
+    padding-left: 20px;
+    padding-right: 20px;
 }
 /* ==========================================================
    3. FONT CHỮ CHUẨN FIGMA (DÙNG CLAMP ĐỂ CHỐNG BỊ QUÁ BÉ)
